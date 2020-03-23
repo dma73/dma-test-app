@@ -1,4 +1,4 @@
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
 /* Application-wide Styles */
 h1 {
   color: #369;

@@ -19,7 +19,7 @@
         <td>{{ item.theme | titlecase }}</td>
         <td [style.color]="getColor(item.maitrise)"><fa-icon [icon]="faGraduationCap"></fa-icon></td>
         <td><a [routerLink]="['/edit', item.id]"><fa-icon [icon]="faEdit"></fa-icon></a></td>
-        <td><a (click)="onDelete(item.id)"><fa-icon [icon]="faTrashAlt"></fa-icon></a></td>
+        <td><a [routerLink]="['/delete', item.id]"><fa-icon [icon]="faTrashAlt"></fa-icon></a></td>
     </tr>
     <tr><td colspan="5" style="text-align:right"><a [routerLink]="['/edit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></a></td></tr>
     <tr *ngIf="!items || !items.length">

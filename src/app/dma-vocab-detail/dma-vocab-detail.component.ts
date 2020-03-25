@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../dma-vocab-core/data.service';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IVocabItem } from '../dma-vocab-shared/interfaces';
 import { NgForm } from '@angular/forms';
-import { isNgTemplate } from '@angular/compiler';
 
 @Component({
   selector: 'app-dma-vocab-detail',

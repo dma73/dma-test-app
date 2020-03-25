@@ -1,0 +1,19 @@
+<p>
+  dma-vocab-delete works!
+</p>
+
+<form  [ngIf]="vocabItem" (ngSubmit)="onSubmit()" novalidate>
+  <h1>Delete</h1>
+  <div [ngIf]="vocabItem.id > 0"><label>ID: {{vocabItem.id}}</label></div>
+  <div class="form-group">
+  <label>Anglais: {{vocabItem.anglais}}</label>
+  </div>
+  <div class="form-group">
+    <label>Français: {{vocabItem.francais}}</label>
+  </div>
+   <div class="form-group">
+      <label>Thème: {{vocabItem.theme}}</label>
+    </div>
+    <button type="submit" class="btn btn-dark">Confirm</button>
+    <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
+</form>

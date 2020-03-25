@@ -1,22 +1,20 @@
 <header id="header">
-  <nav class="navbar navbar-light bg-light navbar-expand-lg static-top" id=navigation>
-  <a href="#" class="navbar-brand">My Website</a>
-  <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+  <nav class="navbar navbar-dark navbar-expand-lg static-top" style="background-color: #317db4;" id=navigation>
+  <a href="#" class="navbar-brand">Vocabulaire</a>
+  <button class="navbar-toggler" (click)="isCollapsed = !isCollapsed"
+  [attr.aria-expanded]="!isCollapsed" >
     <span class="navbar-toggler-icon"></span>
 </button>
-<div class="collapse navbar-collapse" id="navbarCollapse" name="navbarCollapse"  data-parent="#header">
+<div class="navbar-collapse" id="navbarCollapse" name="navbarCollapse"  data-parent="#header" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav ml-auto">
           <li class="navbar-item">
-              <a href="#" class="nav-link">Homepage</a>
+              <a href="/vocablist" class="nav-link">Liste</a>
           </li>
           <li class="navbar-item">
-              <a href="#" class="nav-link">Blog</a>
+              <a href="/vocablesson" class="nav-link">Leçons</a>
           </li>
           <li class="navbar-item">
-              <a href="#" class="nav-link">About Me</a>
-          </li>
-          <li class="navbar-item">
-              <a href="#" class="nav-link">Contact</a>
+              <a href="/vocabtest" class="nav-link">Evaluation</a>
           </li>
       </ul>
   </div>

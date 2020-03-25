@@ -10,25 +10,29 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DmaVocabDetailComponent } from './dma-vocab-detail/dma-vocab-detail.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { DmaVocabDeleteComponent } from './dma-vocab-delete/dma-vocab-delete.component';
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      DmaVocabListComponent,
-      DmaVocabDetailComponent,
+  declarations: [
+    AppComponent,
+    DmaVocabListComponent,
+    DmaVocabDetailComponent,
+    DmaVocabDeleteComponent
   ],
-   imports: [
-      BrowserModule,
-      AppRoutingModule,
-      DmaVocabCoreModule,
-      DmaVocabSharedModule,
-      FontAwesomeModule,
-      FormsModule,
-      NgbModule
-   ],
-   providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+  imports: [
+    NgbModule,
+    BrowserModule,
+    AppRoutingModule,
+    DmaVocabCoreModule,
+    DmaVocabSharedModule,
+    FontAwesomeModule,
+    FormsModule,
+    CommonModule
+  ],
+  providers: [],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

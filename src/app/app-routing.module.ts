@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'edit/:id', component: DmaVocabDetailComponent},
   { path: 'delete/:id', component: DmaVocabDeleteComponent},
   { path: 'vocablesson', component: DmaVocabLessonComponent},
-  { path: 'vocabtest', component: DmaVocabTestComponent},
+  { path: 'vocabtest/:theme', component: DmaVocabTestComponent},
   { path: '', pathMatch: 'full', redirectTo: 'vocablist'},
   { path: '**', pathMatch: 'full', redirectTo: 'vocablist' }
 ];

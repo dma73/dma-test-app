@@ -1,3 +1,8 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class DmaVocabUtils {
   getColor(maitrise: number): string {
     if (maitrise === 0) { return 'darkred'; }

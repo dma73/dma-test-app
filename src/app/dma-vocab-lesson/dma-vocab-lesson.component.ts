@@ -29,7 +29,7 @@ export class DmaVocabLessonComponent implements OnInit {
   }
   getWords(theme: string): IVocabItem[] {
     const lecon: IVocabItem[] = new Array<IVocabItem>();
-    if (this.words){
+    if (this.words) {
       this.words.forEach((word) => {
         if (word.theme === theme) {
           lecon.push(word);

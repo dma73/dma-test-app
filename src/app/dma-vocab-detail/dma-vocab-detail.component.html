@@ -1,5 +1,7 @@
 <form  *ngIf="vocabItem" #it="ngForm" (ngSubmit)="onSubmit(it)" novalidate>
-  <h1>Details</h1>
+
+  <div class="d-flex flex-column p-2">
+  <h3>Modifier</h3>
   <div *ngIf="vocabItem.id > 0"><label>ID: {{vocabItem.id}}</label></div>
   <div class="form-group">
   <label>Anglais</label>
@@ -31,5 +33,8 @@
   Name is required
 </div>
        </div>
-       <button type="submit" class="btn btn-primary" [disabled]="!it.form.valid">Submit</button>
+       <div class="d-flex flex-row">
+       <button type="submit" class="btn btn-dark m-1" [disabled]="!it.form.valid">Sauvegarder</button>
+      </div>
+      </div>
 </form>

@@ -3,6 +3,8 @@ import { DataService } from '../dma-vocab-core/data.service';
 import { IVocabItem } from '../dma-vocab-shared/interfaces';
 import { faEdit, faTrashAlt, faPlus, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { CapitalizeFirstPipe } from '../dma-vocab-shared/capitalizefirst.pipe';
+import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 
 @Component({
   selector: 'app-dma-vocab-list',
@@ -14,8 +16,11 @@ export class DmaVocabListComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faPlus = faPlus;
   faGraduationCap = faGraduationCap;
+  capitalizeFirst: CapitalizeFirstPipe;
   items: IVocabItem[];
   title: string;
+  utils: DmaVocabUtils = new DmaVocabUtils();
+
   constructor(private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
@@ -34,11 +39,6 @@ export class DmaVocabListComponent implements OnInit {
       , error: null
     });
   }
-  getColor(maitrise: number): string {
-    if (maitrise === 0) { return 'darkred'; }
-    if (maitrise === 1) { return 'orangered'; }
-    if (maitrise === 2) { return 'darkorange'; }
-    if (maitrise === 3) { return 'gold'; }
-    if (maitrise === 4) { return 'green'; }
+  onSort(colname: string) {
   }
 }

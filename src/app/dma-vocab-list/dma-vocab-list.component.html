@@ -1,29 +1,35 @@
-<h1>Liste de vocabulaire</h1><h4 *ngIf="items && items.length">( {{ items.length }} Mots)</h4>
-<br />
-<table class="table table-hover">
+
+<div class="d-flex justify-content-between">
+  <div class="d-flex flex-row align-items-center m-2"><h4>Liste de vocabulaire</h4><h6 *ngIf="items && items.length" class="ml-2 mt-1">( {{ items.length }} Mots)</h6></div>
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></button>
+</div>
+<div style="max-height: 400px; overflow-y: scroll;">
+<table class="table table-striped w-auto" >
     <thead>
         <tr>
-            <th>Anglais</th>
-            <th>Francais</th>
-            <th>Thème</th>
-            <th>Maitrise</th>
+            <th scope="col" sortable="anglais" (sort)="onSort('anglais')" >Anglais</th>
+            <th scope="col" sortable="francais" (sort)="onSort('francais')" >Francais</th>
+            <th scope="col" sortable="theme" (sort)="onSort('theme')" >Thème</th>
+            <th scope="col" sortable="maitrise" (sort)="onSort('maitrise')" >Maitrise</th>
             <th> </th>
             <th> </th>
         </tr>
     </thead>
+    <tbody>
     <tr *ngFor="let item of items">
         <td>
-              {{ item.anglais | titlecase }}
+              {{ item.anglais | capitalizeFirst }}
         </td>
-        <td>{{ item.francais | titlecase }}</td>
-        <td>{{ item.theme | titlecase }}</td>
-        <td [style.color]="getColor(item.maitrise)"><fa-icon [icon]="faGraduationCap"></fa-icon></td>
+        <td>{{ item.francais | capitalizeFirst }}</td>
+        <td>{{ item.theme | capitalizeFirst }}</td>
+        <td [style.color]="utils.getColor(item.maitrise)"><fa-icon [icon]="faGraduationCap"></fa-icon></td>
         <td><a [routerLink]="['/edit', item.id]"><fa-icon [icon]="faEdit"></fa-icon></a></td>
         <td><a [routerLink]="['/delete', item.id]"><fa-icon [icon]="faTrashAlt"></fa-icon></a></td>
     </tr>
-    <tr><td colspan="5" style="text-align:right"><a [routerLink]="['/edit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></a></td></tr>
     <tr *ngIf="!items || !items.length">
         <td colspan="5">Aucun mot trouvé</td>
     </tr>
+    </tbody>
 </table>
+</div>
 <br />

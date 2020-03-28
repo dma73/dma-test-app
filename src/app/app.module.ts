@@ -12,27 +12,33 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { DmaVocabDeleteComponent } from './dma-vocab-delete/dma-vocab-delete.component';
+import { CapitalizeFirstPipe } from './dma-vocab-shared/capitalizefirst.pipe';
+import { DmaVocabLessonComponent } from './dma-vocab-lesson/dma-vocab-lesson.component';
+import { DmaVocabTestComponent } from './dma-vocab-test/dma-vocab-test.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DmaVocabListComponent,
-    DmaVocabDetailComponent,
-    DmaVocabDeleteComponent
-  ],
-  imports: [
-    NgbModule,
-    BrowserModule,
-    AppRoutingModule,
-    DmaVocabCoreModule,
-    DmaVocabSharedModule,
-    FontAwesomeModule,
-    FormsModule,
-    CommonModule
-  ],
-  providers: [],
-  bootstrap: [
-    AppComponent
-  ]
+   declarations: [
+      AppComponent,
+      DmaVocabListComponent,
+      DmaVocabDetailComponent,
+      DmaVocabDeleteComponent,
+      CapitalizeFirstPipe,
+      DmaVocabLessonComponent,
+      DmaVocabTestComponent
+   ],
+   imports: [
+      NgbModule,
+      BrowserModule,
+      AppRoutingModule,
+      DmaVocabCoreModule,
+      DmaVocabSharedModule,
+      FontAwesomeModule,
+      FormsModule,
+      CommonModule
+   ],
+   providers: [],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule { }

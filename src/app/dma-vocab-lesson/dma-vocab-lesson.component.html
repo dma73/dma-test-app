@@ -1,0 +1,24 @@
+  <div class="m-2">
+  <select [(ngModel)]="current" (ngModelChange)="refresh()">
+    <option *ngFor="let lesson of lessons" value={{lesson}}>{{lesson}}</option>
+  </select>
+  </div>
+  <div class="m-2" *ngIf="currentLesson && currentLesson.length > 0" style="max-height: 400px; overflow-y: scroll;">
+  <table class="table table-striped w-auto" >
+      <thead>
+          <th>Anglais</th>
+          <th>Français</th>
+          <th>Maitrise</th>
+      </thead>
+      <tbody>
+      <tr *ngFor="let word of currentLesson">
+          <td><b>{{ word.anglais }}</b></td>
+          <td>{{ word.francais }}</td>
+          <td [style.color]="utils.getColor(word.maitrise)"><fa-icon [icon]="faGraduationCap"></fa-icon></td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+<div *ngIf="!currentLesson || currentLesson.length == 0" style="max-height: 400px; overflow-y: scroll;">
+  <h5 class="m-2">Sélectionne un thème</h5>
+</div>

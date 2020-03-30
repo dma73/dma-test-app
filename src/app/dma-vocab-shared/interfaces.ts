@@ -5,6 +5,7 @@ export interface IVocabItem {
   maitrise: number;
   niveau: number;
   theme: string;
+  contexte: string;
   _links?: object;
 }
 

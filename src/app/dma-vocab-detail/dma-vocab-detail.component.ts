@@ -22,6 +22,7 @@ export class DmaVocabDetailComponent implements OnInit {
     if (+id === 0) {
       const vocabItem = {} as IVocabItem;
       vocabItem.id = 0;
+      vocabItem.contexte = '';
       this.vocabItem = vocabItem;
     } else {
       this.dataService.getVocabItem(+id).subscribe((vocabItem: IVocabItem) => {
@@ -30,8 +31,6 @@ export class DmaVocabDetailComponent implements OnInit {
     }
   }
   onSubmit(it: NgForm) {
-    console.log(it.value);  // { first: '', last: '' }
-    console.log(it.valid);  // false
     this.submitted = true;
     this.dataService.saveVocabItem(+( this.vocabItem).id, this.vocabItem).subscribe((vocabItem: IVocabItem) => {
       this.vocabItem = vocabItem;

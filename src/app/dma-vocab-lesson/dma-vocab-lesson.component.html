@@ -1,19 +1,27 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex flex-row align-items-center m-2">
+    <h4>Leçons</h4>
+  </div>
+  <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b><fa-icon [icon]="faGraduationCap" size="1x">  </fa-icon></button>
+</div>
 <div class="m-2">
   <select [(ngModel)]="current" (ngModelChange)="refresh()">
     <option *ngFor="let lesson of lessons" value={{lesson}}>{{lesson}}</option>
   </select>
 </div>
-<div class="m-2" *ngIf="currentLesson && currentLesson.length > 0" style="max-height: 400px; overflow-y: scroll;">
-  <table class="table table-striped w-auto">
+<div class="border m-2 dma-panel" *ngIf="currentLesson && currentLesson.length > 0">
+  <table class="table table-striped w-auto border-top-0 border-right border-bottom">
     <thead>
       <th>Anglais</th>
       <th>Français</th>
+      <th>Contexte</th>
       <th>Maitrise</th>
     </thead>
     <tbody>
       <tr *ngFor="let word of currentLesson">
         <td><b>{{ word.anglais }}</b></td>
         <td>{{ word.francais }}</td>
+        <td>{{ word.contexte }}</td>
         <td [style.color]="utils.getColor(word.maitrise)">
           <fa-icon [icon]="faGraduationCap"></fa-icon>
         </td>

@@ -23,6 +23,7 @@ export class DmaVocabDetailComponent implements OnInit {
       const vocabItem = {} as IVocabItem;
       vocabItem.id = 0;
       vocabItem.contexte = '';
+      vocabItem.bidirectionnel = true;
       this.vocabItem = vocabItem;
     } else {
       this.dataService.getVocabItem(+id).subscribe((vocabItem: IVocabItem) => {

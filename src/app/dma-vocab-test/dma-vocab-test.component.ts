@@ -55,7 +55,7 @@ export class DmaVocabTestComponent implements OnInit {
   }
   private randomInt(max: number): number {
     const rv: number = Math.floor(Math.random() * (max));
-    console.log('random(' + max + ') = ' + rv);
+    // console.log('random(' + max + ') = ' + rv);
     return rv;
   }
   private randomBoolean(): boolean {
@@ -64,7 +64,7 @@ export class DmaVocabTestComponent implements OnInit {
     if (rnd > 0) {
       rv = true;
     }
-    console.log('' + rnd + ' , ' + rv);
+    // console.log('' + rnd + ' , ' + rv);
     return rv;
   }
   private addTestItemsPerMaitrise(count: number, maitrise: number, vocabItems: IVocabItem[]) {
@@ -78,8 +78,13 @@ export class DmaVocabTestComponent implements OnInit {
   private showQuestion() {
     if (this.testItems.length > 0) {
 
-      this.sens = this.randomBoolean();
       this.testItem = this.testItems[0];
+      if (this.testItem.bidirectionnel) {
+        this.sens = this.randomBoolean();
+      } else {
+        this.sens = true;
+      }
+
       this.header = 'Question ' + (this.testSize + 1 - this.testItems.length)
         + ' de ' + this.testSize + ' -      Thème : ' + this.testItem.theme;
       this.reponse = '';
@@ -91,10 +96,10 @@ export class DmaVocabTestComponent implements OnInit {
       }
       if (this.sens) {
 
-        this.question = 'Anglais: ' + this.testItem.anglais + contexte;
+        this.question = 'Anglais: ' + this.testItem.question + contexte;
         this.labelreponse = 'Francais: ';
       } else {
-        this.question = 'Francais: ' + this.testItem.francais + contexte;
+        this.question = 'Francais: ' + this.testItem.reponse + contexte;
         this.labelreponse = 'Anglais: ';
       }
     } else {
@@ -109,7 +114,7 @@ export class DmaVocabTestComponent implements OnInit {
       if (!this.error) {
         if (!this.teste()) {
           this.feedback = 'Réponse correcte - Mot ' + 'Anglais' + ': <'
-            + this.testItem.anglais + '> Mot ' + 'Francais' + ': <' + this.testItem.francais + '>';
+            + this.testItem.question + '> Mot ' + 'Francais' + ': <' + this.testItem.reponse + '>';
           this.error = true;
           this.errorCount++;
           this.buttontext = 'Suivant';
@@ -130,9 +135,9 @@ export class DmaVocabTestComponent implements OnInit {
     let reponse = '';
     let rv = false;
     if (this.sens) {
-      reponse = this.testItem.francais;
+      reponse = this.testItem.reponse;
     } else {
-      reponse = this.testItem.anglais;
+      reponse = this.testItem.question;
     }
     // console.log(this.reponse + ' , ' + reponse + ' , ' + this.sens);
     if (this.check(reponse, this.reponse)) {

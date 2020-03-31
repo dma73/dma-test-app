@@ -19,9 +19,9 @@
     <tbody>
     <tr *ngFor="let item of items">
         <td>
-              {{ item.anglais | capitalizeFirst }}
+              {{ item.question | capitalizeFirst }}
         </td>
-        <td>{{ item.francais | capitalizeFirst }}</td>
+        <td>{{ item.reponse | capitalizeFirst }}</td>
         <td>{{ item.contexte | capitalizeFirst }}</td>
         <td>{{ item.theme | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(item.maitrise)"><fa-icon [icon]="faGraduationCap"></fa-icon></td>

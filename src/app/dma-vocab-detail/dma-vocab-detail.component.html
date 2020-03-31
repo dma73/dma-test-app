@@ -5,17 +5,17 @@
     <div *ngIf="vocabItem.id > 0"><label>ID: {{vocabItem.id}}</label></div>
     <div class="form-group">
       <label>Anglais</label>
-      <input type="text" class="form-control" id="anglais" required [(ngModel)]="vocabItem.anglais" name="anglais"
-        #anglais="ngModel">
-      <div [hidden]="anglais.valid || anglais.pristine" class="alert alert-danger">
+      <input type="text" class="form-control" id="question" required [(ngModel)]="vocabItem.question" name="question"
+        #question="ngModel">
+      <div [hidden]="question.valid || question.pristine" class="alert alert-danger">
         Name is required
       </div>
     </div>
     <div class="form-group">
       <label>Francais</label>
-      <input type="text" class="form-control" id="francais" required [(ngModel)]="vocabItem.francais" name="francais"
-        #francais="ngModel">
-      <div [hidden]="francais.valid || francais.pristine" class="alert alert-danger">
+      <input type="text" class="form-control" id="reponse" required [(ngModel)]="vocabItem.reponse" name="reponse"
+        #reponse="ngModel">
+      <div [hidden]="reponse.valid || reponse.pristine" class="alert alert-danger">
         Name is required
       </div>
     </div>
@@ -31,6 +31,12 @@
       <div [hidden]="theme.valid || theme.pristine" class="alert alert-danger">
         Name is required
       </div>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="checkbox" [value]="vocabItem.bidirectionnel" [(ngModel)]="vocabItem.bidirectionnel" name="bidirectionnel"/>
+        Interroger dans les deux sens.
+      </label>
     </div>
     <div class="d-flex flex-row">
       <button type="submit" class="btn btn-dark m-1" [disabled]="!it.form.valid">Sauvegarder</button>

@@ -17,6 +17,7 @@ export interface IMatiereItem {
   reponselabel: string;
   intitule: string;
   bidirectionnel: boolean;
+  defaultmat: boolean;
   _links?: object;
 }
 export interface IVocabItem {

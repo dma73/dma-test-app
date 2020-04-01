@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../dma-vocab-core/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
-import { IVocabItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
+import { MatiereService } from '../dma-vocab-core/matiere.service';
 
 @Component({
   selector: 'app-dma-vocab-test',
@@ -26,32 +27,43 @@ export class DmaVocabTestComponent implements OnInit {
   buttontext = '';
   theme = '';
   error = false;
+  matiere: IMatiereItem;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private router: Router,
-              private filterUtils: DmaVocabFilterutils) { }
+              private filterUtils: DmaVocabFilterutils,
+              private matiereService: MatiereService) { }
 
   ngOnInit() {
     this.theme = this.route.snapshot.paramMap.get('theme');
     this.createTest();
   }
   createTest() {
-    for ( let i = 0; i < 20; i++) {
-      this.randomInt(10);
-    }
-    this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
-      let items: IVocabItem[] = new Array<IVocabItem>();
-      items = this.filterUtils.getWords('theme', this.theme, vocabItems);
-      this.testItems = new Array<IVocabItem>();
-      this.addTestItemsPerMaitrise(1, 4, items);
-      this.addTestItemsPerMaitrise(2, 3, items);
-      this.addTestItemsPerMaitrise(5, 2, items);
-      this.addTestItemsPerMaitrise(9, 1, items);
-      this.addTestItemsPerMaitrise(19, 0, items);
-      this.testSize = this.testItems.length;
-      this.showQuestion();
-    });
+    this.matiereService
+      .getCurrentOrDefaultItem()
+      .subscribe((matiere: IMatiereItem) => {
+        this.matiere = matiere;
+        this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
+          let items: IVocabItem[] = new Array<IVocabItem>();
+
+          items = this.filterUtils.getFilteredItems('theme', this.theme,
+            this.filterUtils.getFilteredItems(
+              'matiere',
+              '' + matiere.id,
+              vocabItems
+            )
+          );
+          this.testItems = new Array<IVocabItem>();
+          this.addTestItemsPerMaitrise(1, 4, items);
+          this.addTestItemsPerMaitrise(2, 3, items);
+          this.addTestItemsPerMaitrise(5, 2, items);
+          this.addTestItemsPerMaitrise(9, 1, items);
+          this.addTestItemsPerMaitrise(19, 0, items);
+          this.testSize = this.testItems.length;
+          this.showQuestion();
+        });
+      });
   }
   private randomInt(max: number): number {
     const rv: number = Math.floor(Math.random() * (max));
@@ -68,7 +80,7 @@ export class DmaVocabTestComponent implements OnInit {
     return rv;
   }
   private addTestItemsPerMaitrise(count: number, maitrise: number, vocabItems: IVocabItem[]) {
-    const filtered: IVocabItem[] = this.filterUtils.getWords('maitrise', '' + maitrise, vocabItems);
+    const filtered: IVocabItem[] = this.filterUtils.getFilteredItems('maitrise', '' + maitrise, vocabItems);
     if (filtered.length > 0) {
       while (this.testItems.length <= count) {
         this.testItems.push(filtered[this.randomInt(filtered.length)]);
@@ -85,7 +97,7 @@ export class DmaVocabTestComponent implements OnInit {
         this.sens = true;
       }
 
-      this.header = 'Question ' + (this.testSize + 1 - this.testItems.length)
+      this.header = this.matiere.intitule + ' - Evaluation : Question ' + (this.testSize + 1 - this.testItems.length)
         + ' de ' + this.testSize + ' -      Thème : ' + this.testItem.theme;
       this.reponse = '';
       this.feedback = '';
@@ -96,11 +108,11 @@ export class DmaVocabTestComponent implements OnInit {
       }
       if (this.sens) {
 
-        this.question = 'Anglais: ' + this.testItem.question + contexte;
-        this.labelreponse = 'Francais: ';
+        this.question = this.matiere.questionlabel + ': ' + this.testItem.question + contexte;
+        this.labelreponse = this.matiere.reponselabel + ': ';
       } else {
-        this.question = 'Francais: ' + this.testItem.reponse + contexte;
-        this.labelreponse = 'Anglais: ';
+        this.question = this.matiere.reponselabel + ': ' + this.testItem.reponse + contexte;
+        this.labelreponse = this.matiere.questionlabel + ': ';
       }
     } else {
       this.feedback = 'Le test est terminé, vous avez ' + (this.testSize - this.errorCount) + '/' + this.testSize;
@@ -113,8 +125,8 @@ export class DmaVocabTestComponent implements OnInit {
     } else {
       if (!this.error) {
         if (!this.teste()) {
-          this.feedback = 'Réponse correcte - Mot ' + 'Anglais' + ': <'
-            + this.testItem.question + '> Mot ' + 'Francais' + ': <' + this.testItem.reponse + '>';
+          this.feedback = 'Réponse correcte - ' + this.matiere.questionlabel + ': <'
+            + this.testItem.question + '> Mot ' + this.matiere.reponselabel + ': <' + this.testItem.reponse + '>';
           this.error = true;
           this.errorCount++;
           this.buttontext = 'Suivant';

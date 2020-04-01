@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { IVocabItem, IRESTfulVocabItemList, IVocabItemList } from '../../app/dma-vocab-shared/interfaces';
+import { IMatiereItem, IRESTfulMatiereItemList, IMatiereItemList } from '../../app/dma-vocab-shared/interfaces';
 import { Data } from '@angular/router';
 
 @Injectable({
@@ -40,6 +41,7 @@ export class DataService {
         catchError(this.handleError)
       );
     }
+
     getVocabItem(id: number): Observable<IVocabItem> {
       return this.http.get<IRESTfulVocabItemList>('http://dmathys.com:8081/vocabitems')
         .pipe(

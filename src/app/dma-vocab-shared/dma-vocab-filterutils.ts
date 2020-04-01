@@ -5,22 +5,25 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DmaVocabFilterutils {
-  getWords(criteria: string, filter: string, words: IVocabItem[]): IVocabItem[] {
-    let lecon: IVocabItem[] = new Array<IVocabItem>();
+  getFilteredItems(criteria: string, filter: string, items: IVocabItem[]): IVocabItem[] {
+    let filtered: IVocabItem[] = new Array<IVocabItem>();
     if (filter !== '') {
-      if (words) {
-        words.forEach((word) => {
-          if (criteria === 'theme' && word.theme === filter) {
-            lecon.push(word);
+      if (items) {
+        items.forEach((item) => {
+          if (criteria === 'theme' && item.theme === filter) {
+            filtered.push(item);
           }
-          if (criteria === 'maitrise' && word.maitrise === +filter) {
-            lecon.push(word);
+          if (criteria === 'maitrise' && item.maitrise === +filter) {
+            filtered.push(item);
+          }
+          if (criteria === 'matiere' && item.matiereid === +filter) {
+            filtered.push(item);
           }
         });
       }
     } else {
-      lecon = words;
+      filtered = items;
     }
-    return lecon;
+    return filtered;
   }
 }

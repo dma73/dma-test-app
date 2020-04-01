@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between">
   <div class="d-flex flex-row align-items-center m-2">
-    <h4>Leçons</h4>
+    <h4 *ngIf="matiereItem">{{matiereItem.intitule}} - Thèmes</h4>
   </div>
   <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b><fa-icon [icon]="faGraduationCap" size="1x">  </fa-icon></button>
 </div>
@@ -12,8 +12,8 @@
 <div class="border m-2 dma-panel" *ngIf="currentLesson && currentLesson.length > 0">
   <table class="table table-striped w-auto border-top-0 border-right border-bottom">
     <thead>
-      <th>Anglais</th>
-      <th>Français</th>
+      <th *ngIf="matiereItem">{{matiereItem.questionlabel}}</th>
+      <th *ngIf="matiereItem">{{matiereItem.reponselabel}}</th>
       <th>Contexte</th>
       <th>Maitrise</th>
     </thead>

@@ -4,7 +4,7 @@
     <h3>Modifier</h3>
     <div *ngIf="vocabItem.id > 0"><label>ID: {{vocabItem.id}}</label></div>
     <div class="form-group">
-      <label>Anglais</label>
+      <label>English</label>
       <input type="text" class="form-control" id="question" required [(ngModel)]="vocabItem.question" name="question"
         #question="ngModel">
       <div [hidden]="question.valid || question.pristine" class="alert alert-danger">

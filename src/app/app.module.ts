@@ -15,6 +15,7 @@ import { DmaVocabDeleteComponent } from './dma-vocab-delete/dma-vocab-delete.com
 import { CapitalizeFirstPipe } from './dma-vocab-shared/capitalizefirst.pipe';
 import { DmaVocabLessonComponent } from './dma-vocab-lesson/dma-vocab-lesson.component';
 import { DmaVocabTestComponent } from './dma-vocab-test/dma-vocab-test.component';
+import { InputFocusDirective } from './dma-vocab-shared/input-focus-directive';
 
 @NgModule({
    declarations: [
@@ -24,7 +25,8 @@ import { DmaVocabTestComponent } from './dma-vocab-test/dma-vocab-test.component
       DmaVocabDeleteComponent,
       CapitalizeFirstPipe,
       DmaVocabLessonComponent,
-      DmaVocabTestComponent
+      DmaVocabTestComponent,
+      InputFocusDirective
    ],
    imports: [
       NgbModule,

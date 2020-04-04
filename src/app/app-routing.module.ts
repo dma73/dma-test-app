@@ -5,6 +5,7 @@ import { DmaVocabDetailComponent } from './dma-vocab-detail/dma-vocab-detail.com
 import { DmaVocabDeleteComponent } from './dma-vocab-delete/dma-vocab-delete.component';
 import { DmaVocabLessonComponent } from './dma-vocab-lesson/dma-vocab-lesson.component';
 import { DmaVocabTestComponent } from './dma-vocab-test/dma-vocab-test.component';
+import { DmavocabPolyComponent } from './dma-vocab-delete/dmavocab-poly/dmavocab-poly.component';
 
 
 const routes: Routes = [
@@ -13,8 +14,9 @@ const routes: Routes = [
   { path: 'delete/:id', component: DmaVocabDeleteComponent},
   { path: 'vocablesson', component: DmaVocabLessonComponent},
   { path: 'vocabtest/:theme', component: DmaVocabTestComponent},
-  { path: '', pathMatch: 'full', redirectTo: 'vocablist'},
-  { path: '**', pathMatch: 'full', redirectTo: 'vocablist' }
+  { path: 'poly', component: DmavocabPolyComponent},
+  { path: '', pathMatch: 'full', redirectTo: '/vocablist'},
+  { path: '**', pathMatch: 'full', redirectTo: '/vocablist' }
 ];
 
 @NgModule({

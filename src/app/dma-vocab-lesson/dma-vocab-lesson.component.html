@@ -2,6 +2,7 @@
   <div class="d-flex flex-row align-items-center m-2">
     <h4 *ngIf="matiereItem">{{matiereItem.intitule}} - Thèmes</h4>
   </div>
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></button>
   <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b><fa-icon [icon]="faGraduationCap" size="1x">  </fa-icon></button>
 </div>
 <div class="m-2">

@@ -44,6 +44,7 @@ export class DmaVocabTestComponent implements OnInit {
       .getCurrentOrDefaultItem()
       .subscribe((matiere: IMatiereItem) => {
         this.matiere = matiere;
+        console.log('createTest initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
         this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
           let items: IVocabItem[] = new Array<IVocabItem>();
 

@@ -16,6 +16,7 @@ import { CapitalizeFirstPipe } from './dma-vocab-shared/capitalizefirst.pipe';
 import { DmaVocabLessonComponent } from './dma-vocab-lesson/dma-vocab-lesson.component';
 import { DmaVocabTestComponent } from './dma-vocab-test/dma-vocab-test.component';
 import { InputFocusDirective } from './dma-vocab-shared/input-focus-directive';
+import { DmavocabPolyComponent } from './dma-vocab-delete/dmavocab-poly/dmavocab-poly.component';
 
 @NgModule({
    declarations: [
@@ -26,6 +27,7 @@ import { InputFocusDirective } from './dma-vocab-shared/input-focus-directive';
       CapitalizeFirstPipe,
       DmaVocabLessonComponent,
       DmaVocabTestComponent,
+      DmavocabPolyComponent,
       InputFocusDirective
    ],
    imports: [

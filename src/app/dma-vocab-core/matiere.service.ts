@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError, Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { IMatiereItem, IRESTfulMatiereItemList, IMatiereItemList } from '../dma-vocab-shared/interfaces';
@@ -9,7 +9,21 @@ import { IMatiereItem, IRESTfulMatiereItemList, IMatiereItemList } from '../dma-
   providedIn: 'root'
 })
 export class MatiereService {
-  private static activeMatiere: IMatiereItem;
+  private activeMatiere: IMatiereItem;
+  private subject = new Subject<IMatiereItem>();
+
+  setMatiere(matiere: IMatiereItem) {
+    this.subject.next(matiere);
+    this.activeMatiere = matiere;
+  }
+
+  clearMatiere() {
+    this.subject.next();
+  }
+
+  getMatiere(): Observable<IMatiereItem> {
+    return this.subject.asObservable();
+  }
 constructor(private http: HttpClient) { }
 getMatiereItems(): Observable<IMatiereItem[]> {
   return this.http.get<IRESTfulMatiereItemList>('http://dmathys.com:8081/matiereitems')
@@ -25,9 +39,11 @@ getMatiereItems(): Observable<IMatiereItem[]> {
   );
 }
 
-public setCurrentMatiere(matiere: IMatiereItem) {
-  MatiereService.activeMatiere = matiere;
-}
+/* public setCurrentMatiere(matiere: IMatiereItem) {
+  console.log('setCurrentMatiere previous: ' + this.activeMatiere.intitule + ' new: ' + matiere.intitule);
+  this.activeMatiere = matiere;
+  this.activeMatiere = matiere;
+} */
 
 getMatiereItem(id: number): Observable<IMatiereItem> {
   return this.http.get<IRESTfulMatiereItemList>('http://dmathys.com:8081/matiereitems')
@@ -46,12 +62,15 @@ getCurrentOrDefaultItem(): Observable<IMatiereItem> {
       map(data => {
         const matiereitems = data._embedded.matiereItemList;
         const matiereitem = matiereitems.filter((item: IMatiereItem) => item.defaultmat === true);
-        if (MatiereService.activeMatiere === undefined) {
+        console.log('getCurrentOrDefaultItem initial value: ' + (this.activeMatiere ? this.activeMatiere.intitule : this.activeMatiere));
+        if (this.activeMatiere === undefined) {
+
           if (matiereitem && matiereitem.length) {
-            MatiereService.activeMatiere = matiereitem[0];
+            this.setMatiere( matiereitem[0]);
           }
         }
-        return MatiereService.activeMatiere;
+        console.log('getCurrentOrDefaultItem final value: ' + (this.activeMatiere ? this.activeMatiere.intitule : this.activeMatiere));
+        return this.activeMatiere;
       }),
       catchError(this.handleError)
     );

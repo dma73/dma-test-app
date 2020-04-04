@@ -26,10 +26,10 @@ export class DmaVocabDeleteComponent implements OnInit {
   }
   onSubmit() {
     this.dataService.deleteVocabItem(this.vocabItem.id).subscribe(() => {
-      this.router.navigate(['/vocabitems']);
+      this.router.navigate(['/vocablist']);
     });
   }
   cancel() {
-      this.router.navigate(['/vocabitems']);
+    this.router.navigate(['/vocablist']);
   }
 }

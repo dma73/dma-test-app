@@ -1,6 +1,11 @@
 <header id="header">
   <nav class="navbar navbar-dark navbar-expand-sm static-top" style="background-color: #317db4;" id=navigation>
-  <a href="#" class="navbar-brand">Vocabulaire</a>
+  <a href="#" class="navbar-brand">Matière</a>
+  <div class="navbar-dark m-2">
+    <select style="background-color: #317db4;" class="navbar-dark navbar-brand" [(ngModel)]="matiereid" (ngModelChange)="refresh()" name="matiere">
+      <option *ngFor="let matiere of matieres" [ngValue]="matiere.id" class="navbar-dark navbar-brand">{{matiere.intitule}}</option>
+    </select>
+  </div>
   <button class="navbar-toggler" (click)="isCollapsed = !isCollapsed"
   [attr.aria-expanded]="!isCollapsed" >
     <span class="navbar-toggler-icon"></span>
@@ -8,10 +13,10 @@
 <div class="navbar-collapse" id="navbarCollapse" name="navbarCollapse"  data-parent="#header" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav ml-auto">
           <li class="navbar-item">
-              <a href="/vocablist" class="nav-link">Liste</a>
+              <a [routerLink]="['/vocablist']" class="nav-link">Liste</a>
           </li>
           <li class="navbar-item">
-              <a href="/vocablesson" class="nav-link">Leçons</a>
+              <a [routerLink]="['/vocablesson']" class="nav-link">Leçons</a>
           </li>
           <li class="navbar-item">
             <a [routerLink]="['/vocabtest', '']" class="nav-link">Evaluation</a>

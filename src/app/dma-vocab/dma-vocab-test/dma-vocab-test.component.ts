@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../dma-vocab-core/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
+import { DataService } from '../dma-vocab-core/data.service';
+import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 
 @Component({

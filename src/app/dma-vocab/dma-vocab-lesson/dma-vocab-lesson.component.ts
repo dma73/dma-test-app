@@ -27,22 +27,26 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService,
               private filterUtils: DmaVocabFilterutils,
               private matiereService: MatiereService) {
-                this.subscription = this.matiereService.getMatiere().subscribe(matiere => {
-                  if (matiere) {
-                    this.matiereItem = matiere;
-                    this.loadData();
-                  }
-                });
-               }
+    this.subscription = this.matiereService.getMatiere()
+    .subscribe(matiere => {
+      if (matiere) {
+        this.matiereItem = matiere;
+        this.loadData(matiere);
+      }
+    });
+  }
 
   ngOnInit() {
-    this.loadData();
+    console.log('ngOnInit()');
+    this.matiereService.getCurrentOrDefaultItem()
+      .subscribe((matiereItem: IMatiereItem) =>
+        this.loadData(matiereItem));
+
   }
-  loadData() {
-    this.matiereService.getCurrentOrDefaultItem().subscribe(
-      (matiereItem: IMatiereItem) => {
-        this.matiereItem = matiereItem;
-        this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
+  loadData(matiereItem: IMatiereItem) {
+    console.log('loadData: ' + matiereItem );
+    this.matiereItem = matiereItem;
+    this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
       this.words = this.filterUtils.getFilteredItems(
         'matiere',
         '' + this.matiereItem.id,
@@ -57,7 +61,6 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
         this.lessons.add(vocabitem.theme);
       });
     });
-  });
 
   }
   refresh() {

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DmavocabPolyComponent } from './dmavocab-poly.component';
+import { DmaMathPolyComponent } from './dma-math-poly.component';
 
 describe('DmavocabPolyComponent', () => {
-  let component: DmavocabPolyComponent;
-  let fixture: ComponentFixture<DmavocabPolyComponent>;
+  let component: DmaMathPolyComponent;
+  let fixture: ComponentFixture<DmaMathPolyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DmavocabPolyComponent ]
+      declarations: [ DmaMathPolyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DmavocabPolyComponent);
+    fixture = TestBed.createComponent(DmaMathPolyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

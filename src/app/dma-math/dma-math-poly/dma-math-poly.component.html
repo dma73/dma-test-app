@@ -1,0 +1,14 @@
+<div class="m-2">
+  <h4>Polynome</h4>
+</div>
+<div class="m-2">
+  <input type="text" class="form-control" id="polynome" required [(ngModel)]="polynome" name="polynome" #resp="ngModel"
+    appInputAutoFocus (keydown.enter)="calc()">
+</div>
+<div class="m-2">
+  <button class="btn btn-secondary m-1" (click)="calc()">Résoudre</button>
+</div>
+<div class="d-flex flex-row align-items-top m-2">
+  <div class="border m-2"  style="width: 160px;white-space: pre-line">{{solution}}</div>
+  <canvas class="border m-2" id="stage" width="300" height="300"></canvas>
+</div>

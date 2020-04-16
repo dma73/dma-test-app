@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DataService } from '../dma-vocab-core/data.service';
 import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import {
   faEdit,
@@ -7,12 +6,12 @@ import {
   faPlus,
   faGraduationCap
 } from '@fortawesome/free-solid-svg-icons';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CapitalizeFirstPipe } from '../dma-vocab-shared/capitalizefirst.pipe';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
+import { DataService } from '../dma-vocab-core/data.service';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dma-vocab-list',
@@ -39,20 +38,21 @@ export class DmaVocabListComponent implements OnInit, OnDestroy {
     this.subscription = this.matiereService.getMatiere().subscribe(matiere => {
       if (matiere) {
         this.matiere = matiere;
-        this.loadData();
+        this.loadData(matiere);
       }
     });
    }
 
   ngOnInit() {
-    this.loadData();
-  }
-  loadData() {
     this.matiereService
       .getCurrentOrDefaultItem()
       .subscribe((matiereItem: IMatiereItem) => {
+        this.loadData(matiereItem);
+      });
+  }
+  loadData(matiereItem: IMatiereItem) {
         this.matiere = matiereItem;
-        console.log('list ngOnInit initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
+        // console.log('list loadData initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
         this.dataService
           .getVocabItems()
           .subscribe((vocabItems: IVocabItem[]) => {
@@ -62,7 +62,6 @@ export class DmaVocabListComponent implements OnInit, OnDestroy {
               vocabItems
             );
           });
-      });
 
   }
   onDelete(id: number) {

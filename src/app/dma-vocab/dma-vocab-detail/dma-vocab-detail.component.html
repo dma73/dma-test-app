@@ -5,15 +5,15 @@
     <div *ngIf="vocabItem.id === 0"><h3>Nouveau</h3></div>
     <div *ngIf="vocabItem.id > 0"><h3>Modifier</h3><label>ID: {{vocabItem.id}}</label></div>
     <div class="form-group">
-      <label>{{matiere.question}}</label>
-      <input type="text" class="form-control" id="question" appInputAutoFocus required [(ngModel)]="vocabItem.question" name="question"
+      <label>{{matiere.questionlabel}}</label>
+      <input type="text" class="form-control" id="question" required [(ngModel)]="vocabItem.question" name="question"
         #question="ngModel">
       <div [hidden]="question.valid || question.pristine" class="alert alert-danger">
         Name is required
       </div>
     </div>
     <div class="form-group">
-      <label>{{matiere.reponse}}</label>
+      <label>{{matiere.reponselabel}}</label>
       <input type="text" class="form-control" id="reponse" required [(ngModel)]="vocabItem.reponse" name="reponse"
         #reponse="ngModel">
       <div [hidden]="reponse.valid || reponse.pristine" class="alert alert-danger">

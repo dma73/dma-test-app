@@ -16,7 +16,7 @@ export class DmaVocabFilterutils {
           if (criteria === 'maitrise' && item.maitrise === +filter) {
             filtered.push(item);
           }
-          if (criteria === 'matiere' && item.matiereid === +filter) {
+          if (criteria === 'matiere' && +item.matiereid === +filter) {
             filtered.push(item);
           }
         });

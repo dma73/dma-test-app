@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { IMatiereItem } from './dma-vocab-shared/interfaces';
-import { DataService } from './dma-vocab-core/data.service';
-import { MatiereService } from './dma-vocab-core/matiere.service';
+import { IMatiereItem } from './dma-vocab/dma-vocab-shared/interfaces';
+import { MatiereService } from './dma-vocab/dma-vocab-core/matiere.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -39,7 +37,9 @@ export class AppComponent implements OnInit {
     console.log(this.currentmatiere.intitule);
     this.matiereService.getMatiereItem(this.matiereid)
       .subscribe((matiere: IMatiereItem) => {
-        this.matiereService.setMatiere(matiere);
+        const matiereArray: Array<IMatiereItem> = new Array<IMatiereItem>();
+        matiereArray.push(matiere);
+        this.matiereService.setMatiere(matiereArray);
         // this.matiereService.setCurrentMatiere(matiere);
         this.currentmatiere = matiere;
         // this.router.navigate(['/vocablist', '' + this.matiereid]);

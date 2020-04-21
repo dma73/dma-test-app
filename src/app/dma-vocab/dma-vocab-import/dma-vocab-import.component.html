@@ -1,24 +1,24 @@
 <p>
   dma-vocab-import works!
 </p>
-<div class="upload_button">
+<div *ngIf="!matiereFile" class="upload_button">
   <label>
     <input type="file" (change)="matiereFileChanged($event)">
     <span class="btn btn-dark m-1">Sélectionner le fichier de matières</span>
   </label>
 </div>
 
-<div class="upload_button">
+<div *ngIf="matieres && !file" class="upload_button">
   <label>
     <input type="file" (change)="fileChanged($event)">
     <span class="btn btn-dark m-1">{{label}}</span>
   </label>
 </div>
 
-<div class="Block">
+<div *ngIf="matiereFile && !matieres" class="Block">
   <button class="btn btn-secondary m-1" (click)="importMatieres()">Suivant import matieres</button>
 </div>
 
-<div class="Block">
-  <button class="btn btn-secondary m-1" (click)="importMatiere()">Suivant import matiere</button>
+<div *ngIf="matieres && file" class="Block">
+  <button class="btn btn-secondary m-1" (click)="importMatiere()">Suivant import matiere!!!!</button>
 </div>

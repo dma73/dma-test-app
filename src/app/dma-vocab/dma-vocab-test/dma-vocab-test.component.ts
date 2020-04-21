@@ -57,10 +57,10 @@ export class DmaVocabTestComponent implements OnInit {
           );
           this.testItems = new Array<IVocabItem>();
           this.addTestItemsPerMaitrise(1, 4, items);
-          this.addTestItemsPerMaitrise(2, 3, items);
-          this.addTestItemsPerMaitrise(5, 2, items);
-          this.addTestItemsPerMaitrise(9, 1, items);
-          this.addTestItemsPerMaitrise(19, 0, items);
+          this.addTestItemsPerMaitrise(3, 3, items);
+          this.addTestItemsPerMaitrise(6, 2, items);
+          this.addTestItemsPerMaitrise(10, 1, items);
+          this.addTestItemsPerMaitrise(20, 0, items);
           this.testSize = this.testItems.length;
           this.showQuestion();
         });
@@ -68,7 +68,7 @@ export class DmaVocabTestComponent implements OnInit {
   }
   private randomInt(max: number): number {
     const rv: number = Math.floor(Math.random() * (max));
-    // console.log('random(' + max + ') = ' + rv);
+    console.log('random(' + max + ') = ' + rv);
     return rv;
   }
   private randomBoolean(): boolean {
@@ -83,8 +83,10 @@ export class DmaVocabTestComponent implements OnInit {
   private addTestItemsPerMaitrise(count: number, maitrise: number, vocabItems: IVocabItem[]) {
     const filtered: IVocabItem[] = this.filterUtils.getFilteredItems('maitrise', '' + maitrise, vocabItems);
     if (filtered.length > 0) {
-      while (this.testItems.length <= count) {
-        this.testItems.push(filtered[this.randomInt(filtered.length)]);
+      while (this.testItems.length < count && filtered.length > 0) {
+        const rand: number = this.randomInt(filtered.length);
+        this.testItems.push(filtered[rand]);
+        filtered.splice(rand, 1);
       }
     }
   }

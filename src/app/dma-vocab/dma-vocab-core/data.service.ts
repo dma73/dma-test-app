@@ -6,8 +6,6 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { IVocabItem, IRESTfulVocabItemList, IVocabItemList } from '../dma-vocab-shared/interfaces';
-import { IMatiereItem, IRESTfulMatiereItemList, IMatiereItemList } from '../dma-vocab-shared/interfaces';
-import { Data } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -52,11 +50,15 @@ export class DataService {
           map(data => {
             console.log(data);
             const vocabitems = data._embedded.vocabItemList;
-            const vocabitem = vocabitems.filter((item: IVocabItem) => item.id === id);
-            return (vocabitem && vocabitem.length) ? vocabitem[0] : null;
+            const filtered = vocabitems.filter((item: IVocabItem) => item.id === id);
+            return this.getFirst<IVocabItem>(filtered);
           }),
           catchError(this.handleError)
         );
+    }
+
+    getFirst<T>( arr: Array<T>): T {
+      return (arr && arr.length) ? arr[0] : null;
     }
 
     saveVocabItem(id: number, item: IVocabItem): Observable<IVocabItem> {
@@ -67,13 +69,13 @@ export class DataService {
     }
 
     private handleError(error: any) {
+      let rv = error;
       console.error('server error:', error);
       if (error.error instanceof Error) {
-          const errMessage = error.error.message;
-          return throwError(errMessage);
+          rv = error.error.message;
           // Use the following instead if using lite-server
           // return Observable.throw(err.text() || 'backend server error');
       }
-      return throwError(error || 'Node.js server error');
+      return throwError(rv || 'Node.js server error');
     }
 }

@@ -22,8 +22,8 @@
 <div class="border m-2 dma-panel" *ngIf="currentLesson && currentLesson.length > 0">
   <table class="table table-striped w-auto border-top-0 border-right border-bottom">
     <thead>
-      <th *ngIf="matiereItem">{{matiereItem.questionlabel}}</th>
-      <th *ngIf="matiereItem">{{matiereItem.reponselabel}}</th>
+      <th *ngIf="matiereItem">{{matiereItem.questionlabel | capitalizeFirst}}</th>
+      <th *ngIf="matiereItem">{{matiereItem.reponselabel | capitalizeFirst}}</th>
       <th>Contexte</th>
       <th>Maitrise</th>
       <th class="border-top-0"> </th>
@@ -31,9 +31,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let word of currentLesson">
-        <td><b>{{ word.question }}</b></td>
-        <td>{{ word.reponse }}</td>
-        <td>{{ word.contexte }}</td>
+        <td><b>{{ word.question | capitalizeFirst }}</b></td>
+        <td>{{ word.reponse | capitalizeFirst }}</td>
+        <td>{{ word.contexte | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(word.maitrise)">
           <fa-icon [icon]="faGraduationCap"></fa-icon>
         </td>

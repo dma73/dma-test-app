@@ -7,6 +7,7 @@ import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { CapitalizeFirstPipe } from '../dma-vocab-shared/capitalizefirst.pipe';
 
 @Component({
   selector: 'app-dma-vocab-lesson',
@@ -32,12 +33,12 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
               private matiereService: MatiereService,
               private route: ActivatedRoute) {
     this.subscription = this.matiereService.getMatiere()
-    .subscribe(matiere => {
-      if (matiere) {
-        this.matiereItem = matiere;
-        this.loadData(matiere);
-      }
-    });
+      .subscribe(matiere => {
+        if (matiere) {
+          this.matiereItem = matiere;
+          this.loadData(matiere);
+        }
+      });
   }
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
 
   }
   loadData(matiereItem: IMatiereItem) {
-    console.log('loadData: ' + matiereItem );
+    console.log('loadData: ' + matiereItem);
     this.matiereItem = matiereItem;
     this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
       this.words = this.filterUtils.getFilteredItems(
@@ -57,19 +58,30 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
         '' + this.matiereItem.id,
         vocabItems
       );
-      this.lessons.clear();
-      this.words.forEach((vocabitem: IVocabItem) => {
-        if (this.theme) {
-          this.current = this.theme;
-          this.refresh();
-        } else if (this.lessons.size === 0) {
-          this.current = vocabitem.theme;
-          this.refresh();
-        }
-        this.lessons.add(vocabitem.theme);
-      });
+      this.buildList();
     });
 
+  }
+  buildList() {
+    this.lessons.clear();
+    this.words.forEach((vocabitem: IVocabItem) => {
+      if (this.theme) {
+        this.current = CapitalizeFirstPipe.toFirstCap(this.theme);
+        this.refresh();
+      } else if (this.lessons.size === 0) {
+        this.current = CapitalizeFirstPipe.toFirstCap(vocabitem.theme);
+        this.refresh();
+      }
+      this.lessons.add(CapitalizeFirstPipe.toFirstCap(vocabitem.theme));
+    });
+    this.lessons = this.sortSet(this.lessons);
+  }
+  sortSet(set: Set<string>): Set<string> {
+    const sorted = new Set<string>();
+    const temp: Array<string> = Array.from(set);
+    temp.sort();
+    temp.forEach((s) => sorted.add(s));
+    return sorted;
   }
   refresh() {
     if (this.current !== '') {

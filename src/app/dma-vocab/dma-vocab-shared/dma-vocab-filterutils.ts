@@ -10,7 +10,7 @@ export class DmaVocabFilterutils {
     if (filter !== '') {
       if (items) {
         items.forEach((item) => {
-          if (criteria === 'theme' && item.theme === filter) {
+          if (criteria === 'theme' && item.theme.toLowerCase() === filter.toLowerCase()) {
             filtered.push(item);
           }
           if (criteria === 'maitrise' && item.maitrise === +filter) {

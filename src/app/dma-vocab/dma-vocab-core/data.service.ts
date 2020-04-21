@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { throwError } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DataService {
-
+    items: IVocabItem[] = new Array<IVocabItem>();
     baseUrl = 'assets/';
 
     constructor(private http: HttpClient) { }
@@ -27,8 +27,8 @@ export class DataService {
         catchError(this.handleError)
       );
     }
-    getVocabItems(): Observable<IVocabItem[]> {
-      // console.log('getVocabItems()');
+    getVocabItemsFromService(): Observable<IVocabItem[]> {
+      console.log('getVocabItemsFromService()');
       return this.http.get<IRESTfulVocabItemList>(environment.baseurl + '/vocabitems')
       .pipe(
         map(data => {
@@ -36,11 +36,40 @@ export class DataService {
             const message = data;
             const embedded: IVocabItemList = message._embedded;
             const items: IVocabItem[] = embedded.vocabItemList as IVocabItem[];
+            this.items = items;
             return items;
           }
         ),
         catchError(this.handleError)
       );
+    }
+
+    updateCache(savedItem: IVocabItem) {
+      if (savedItem.id) {
+        const index = this.items.findIndex((item) => item.id === savedItem.id);
+        console.log(savedItem.question, savedItem.id, index);
+        if (index >= 0) {
+          this.items[index] = savedItem;
+        } else {
+          this.items.push(savedItem);
+        }
+      }
+    }
+    deleteCache(id: number) {
+      const index = this.items.findIndex((item) => item.id === id);
+      if (index >= 0) {
+        this.items.splice(index, 1);
+      }
+    }
+    getVocabItems(): Observable<IVocabItem[]> {
+      console.log('getVocabItems');
+      let rv: Observable<IVocabItem[]>;
+      if (environment.dataCaching && this.items.length > 0) {
+        rv = of(this.items);
+      } else {
+        rv = this.getVocabItemsFromService();
+      }
+      return rv;
     }
 
     getVocabItem(id: number): Observable<IVocabItem> {
@@ -62,10 +91,22 @@ export class DataService {
     }
 
     saveVocabItem(id: number, item: IVocabItem): Observable<IVocabItem> {
-      return this.http.put<IVocabItem>(environment.baseurl + '/vocabitems' + '/' + id, item);
+      return this.http.put<IVocabItem>(environment.baseurl + '/vocabitems' + '/' + id, item)
+        .pipe(
+          map((saveditem) => {
+              this.updateCache(saveditem);
+              return saveditem;
+            })
+        );
     }
     deleteVocabItem(id: number): Observable<IVocabItem> {
-      return this.http.delete<IVocabItem>(environment.baseurl + '/vocabitems' + '/' + id);
+      return this.http.delete<IVocabItem>(environment.baseurl + '/vocabitems' + '/' + id)
+      .pipe(
+        map((deleteditem) => {
+            this.deleteCache(id);
+            return deleteditem;
+          })
+      );;
     }
 
     private handleError(error: any) {

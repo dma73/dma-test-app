@@ -30,12 +30,14 @@ export class MatiereService {
   }
   constructor(private http: HttpClient) { }
   getMatiereItems(): Observable<IMatiereItem[]> {
+    let rv: Observable<IMatiereItem[]>;
     console.log('getMatiereItems');
-    if (this.items.length > 0) {
-      return of(this.items);
+    if (environment.dataCaching && this.items.length > 0) {
+      rv = of(this.items);
     } else {
-      return this.getMatiereItemsFromService();
+      rv = this.getMatiereItemsFromService();
     }
+    return rv;
   }
   getMatiereItemsFromService(): Observable<IMatiereItem[]> {
     console.log('getMatiereItemsFromService');
@@ -45,8 +47,11 @@ export class MatiereService {
           // console.log(data);
           const message = data;
           const embedded: IMatiereItemList = message._embedded;
-          const items: IMatiereItem[] = embedded.matiereItemList as IMatiereItem[];
-          this.items = items;
+          let items: IMatiereItem[] = new Array<IMatiereItem>();
+          if (embedded) {
+            items = embedded.matiereItemList as IMatiereItem[];
+            this.items = items;
+          }
           return items;
         }
         ),

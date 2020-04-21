@@ -2,8 +2,17 @@
   <div class="d-flex flex-row align-items-center m-2">
     <h4 *ngIf="matiereItem">{{matiereItem.intitule}} - Thèmes</h4>
   </div>
-  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></button>
-  <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b><fa-icon [icon]="faGraduationCap" size="1x">  </fa-icon></button>
+  <div class="d-flex flex-row align-items-center m-2">
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, current]"><b>Nouveau Mot </b>
+    <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
+  </button>
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, 'nouveau']"><b>Nouveau Thème </b>
+    <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
+  </button>
+  <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b>
+    <fa-icon [icon]="faGraduationCap" size="1x"> </fa-icon>
+  </button>
+</div>
 </div>
 <div class="m-2">
   <select [(ngModel)]="current" (ngModelChange)="refresh()">
@@ -17,6 +26,8 @@
       <th *ngIf="matiereItem">{{matiereItem.reponselabel}}</th>
       <th>Contexte</th>
       <th>Maitrise</th>
+      <th class="border-top-0"> </th>
+      <th class="border-top-0"> </th>
     </thead>
     <tbody>
       <tr *ngFor="let word of currentLesson">
@@ -26,6 +37,12 @@
         <td [style.color]="utils.getColor(word.maitrise)">
           <fa-icon [icon]="faGraduationCap"></fa-icon>
         </td>
+        <td><a [routerLink]="['/edit', word.id, word.theme]">
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </a></td>
+        <td><a [routerLink]="['/delete', word.id, word.theme]">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </a></td>
       </tr>
     </tbody>
   </table>

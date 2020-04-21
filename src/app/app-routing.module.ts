@@ -11,9 +11,9 @@ import { DmaVocabImportComponent } from './dma-vocab/dma-vocab-import/dma-vocab-
 
 const routes: Routes = [
   { path: 'vocablist', component: DmaVocabListComponent },
-  { path: 'edit/:id', component: DmaVocabDetailComponent},
-  { path: 'delete/:id', component: DmaVocabDeleteComponent},
-  { path: 'vocablesson', component: DmaVocabLessonComponent},
+  { path: 'edit/:id/:theme', component: DmaVocabDetailComponent},
+  { path: 'delete/:id/:theme', component: DmaVocabDeleteComponent},
+  { path: 'vocablesson/:theme', component: DmaVocabLessonComponent},
   { path: 'vocabtest/:theme', component: DmaVocabTestComponent},
   { path: 'poly', component: DmaMathPolyComponent},
   { path: 'import', component: DmaVocabImportComponent},

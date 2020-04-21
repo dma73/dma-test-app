@@ -25,13 +25,16 @@
       <input type="text" class="form-control" id="contexte" [(ngModel)]="vocabItem.contexte" name="contexte"
         #contexte="ngModel">
     </div>
-    <div class="form-group">
+    <div *ngIf="!theme" class="form-group">
       <label>Theme</label>
       <input type="text" class="form-control" id="theme" required [(ngModel)]="vocabItem.theme" name="theme"
         #theme="ngModel">
       <div [hidden]="theme.valid || theme.pristine" class="alert alert-danger">
         Name is required
       </div>
+    </div>
+    <div *ngIf="theme" class="form-group">
+      <label>Theme: {{theme}}</label>
     </div>
     <div class="form-check">
       <label class="form-check-label">

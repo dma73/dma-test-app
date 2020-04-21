@@ -15,21 +15,31 @@ import { BrowserModule } from '@angular/platform-browser';
 })
 export class DmaVocabDeleteComponent implements OnInit {
   vocabItem: IVocabItem;
+  theme = '';
   constructor(private dataService: DataService,
-              private route: ActivatedRoute, private router: Router) { }
+    private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    this.theme = this.route.snapshot.paramMap.get('theme');
     this.dataService.getVocabItem(+id).subscribe((vocabItem: IVocabItem) => {
-        this.vocabItem = vocabItem;
+      this.vocabItem = vocabItem;
     });
   }
   onSubmit() {
     this.dataService.deleteVocabItem(this.vocabItem.id).subscribe(() => {
-      this.router.navigate(['/vocablist']);
+      if (this.theme === '') {
+        this.router.navigate(['/vocablist']);
+      } else {
+        this.router.navigate(['/vocablesson', this.theme]);
+      }
     });
   }
   cancel() {
-    this.router.navigate(['/vocablist']);
+    if (this.theme === '') {
+      this.router.navigate(['/vocablist']);
+    } else {
+      this.router.navigate(['/vocablesson', this.theme]);
+    }
   }
 }

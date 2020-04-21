@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { DataService } from '../dma-vocab-core/data.service';
-import { faGraduationCap, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faGraduationCap, faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
@@ -17,16 +17,20 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   lessons: Set<string> = new Set<string>();
   faGraduationCap = faGraduationCap;
   faPlus = faPlus;
+  faEdit = faEdit;
+  faTrashAlt = faTrashAlt;
   words: IVocabItem[];
   current = '';
   currentLesson: IVocabItem[] = new Array<IVocabItem>();
   utils: DmaVocabUtils = new DmaVocabUtils();
   matiereItem: IMatiereItem;
   subscription: Subscription;
+  theme: string = undefined;
 
   constructor(private dataService: DataService,
               private filterUtils: DmaVocabFilterutils,
-              private matiereService: MatiereService) {
+              private matiereService: MatiereService,
+              private route: ActivatedRoute) {
     this.subscription = this.matiereService.getMatiere()
     .subscribe(matiere => {
       if (matiere) {
@@ -38,6 +42,7 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('ngOnInit()');
+    this.theme = this.route.snapshot.paramMap.get('theme');
     this.matiereService.getCurrentOrDefaultItem()
       .subscribe((matiereItem: IMatiereItem) =>
         this.loadData(matiereItem));
@@ -54,7 +59,10 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
       );
       this.lessons.clear();
       this.words.forEach((vocabitem: IVocabItem) => {
-        if (this.lessons.size === 0) {
+        if (this.theme) {
+          this.current = this.theme;
+          this.refresh();
+        } else if (this.lessons.size === 0) {
           this.current = vocabitem.theme;
           this.refresh();
         }

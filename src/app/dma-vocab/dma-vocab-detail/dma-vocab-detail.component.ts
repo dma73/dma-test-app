@@ -15,15 +15,22 @@ export class DmaVocabDetailComponent implements OnInit {
   vocabItem: IVocabItem;
   matiere: IMatiereItem;
   submitted = false;
+  theme = '';
+  newtheme = false;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private matiereService: MatiereService,
-              private location: Location) {
+              private router: Router) {
   }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    this.theme = this.route.snapshot.paramMap.get('theme');
+    if (this.theme === 'nouveau') {
+      this.theme = '';
+      this.newtheme = true;
+    }
     this.matiereService.getCurrentOrDefaultItem().subscribe(
       (matiereItem: IMatiereItem) => {
         this.matiere = matiereItem;
@@ -31,6 +38,7 @@ export class DmaVocabDetailComponent implements OnInit {
           const vocabItem = {} as IVocabItem;
           vocabItem.id = 0;
           vocabItem.contexte = '';
+          vocabItem.theme = this.theme;
           vocabItem.bidirectionnel = this.matiere.bidirectionnel;
           vocabItem.matiereid = this.matiere.id;
           this.vocabItem = vocabItem;
@@ -46,7 +54,16 @@ export class DmaVocabDetailComponent implements OnInit {
     this.dataService.saveVocabItem(+(this.vocabItem).id, this.vocabItem).subscribe((vocabItem: IVocabItem) => {
       this.vocabItem = vocabItem;
       this.submitted = false;
-      this.location.back();
+      // this.location.back();
+      if (this.newtheme) {
+        this.theme = vocabItem.theme;
+        this.newtheme = false;
+      }
+      if (this.theme === '') {
+        this.router.navigate(['/vocablist']);
+      } else {
+        this.router.navigate(['/vocablesson', this.theme]);
+      }
     });
   }
 }

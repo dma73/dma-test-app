@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   // baseurl: 'http://localhost:4200/api'
-  baseurl: '/api'
+  baseurl: '/api',
+  dataCaching: true
 };
 
 /*

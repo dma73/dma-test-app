@@ -1,0 +1,19 @@
+<ng-template [ngIf]="item">
+  <form (ngSubmit)="onSubmit()" novalidate>
+    <div class="d-flex flex-column p-2">
+      <h3>Supprimer</h3>
+      <ng-template [ngIf]="item.id > 0">
+        <label>ID: {{item.id}}</label>
+      </ng-template>
+      <label>Intitulé: {{item.intitule}}</label>
+      <label>Libellé Question: {{item.questionlabel}}</label>
+      <label>Libellé réponse: {{item.reponselabel}}</label>
+      <label class="alert alert-danger" *ngIf="block">Vous ne pouvez pas supprimer cette matière car il y a toujours des
+        éléments actifs</label>
+      <div class="d-flex flex-row">
+        <button *ngIf="!block" type="submit" class="btn btn-dark m-1">Confirmer</button>
+        <button class="btn btn-secondary m-1" (click)="cancel()">Annuler</button>
+      </div>
+    </div>
+  </form>
+</ng-template>

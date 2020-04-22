@@ -1,0 +1,35 @@
+
+<div class="d-flex justify-content-between">
+  <div class="d-flex flex-row align-items-center m-2"><h4 *ngIf="itemName">{{itemName}} - Liste </h4><h6 *ngIf="items && items.length" class="ml-2 mt-1">( {{ items.length }} {{itemName}})</h6></div>
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/matiereedit', 0]"><b>Ajouter </b><fa-icon [icon]="faPlus" size="1x">  </fa-icon></button>
+</div>
+<div class="dma-panel m-2 border">
+<table class="table table-striped w-auto border-top-0 border-right border-bottom" >
+    <thead class="border-top-0">
+        <tr class="border-top-0">
+          <th class="border-top-0" >Intitulé du cours</th>
+            <th class="border-top-0" >Libellé question</th>
+            <th class="border-top-0" >Libellé réponse</th>
+            <th class="border-top-0" >Sens</th>
+            <th class="border-top-0" >Défaut</th>
+            <th class="border-top-0"> </th>
+            <th class="border-top-0"> </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.intitule | capitalizeFirst }}</td>
+        <td>{{ item.reponselabel | capitalizeFirst }}</td>
+        <td>{{ item.questionlabel | capitalizeFirst }}</td>
+        <td [style.color]="utils.getColor(4)"><fa-icon [icon]="utils.getIcon(item.bidirectionnel)"></fa-icon></td>
+        <td [style.color]="utils.getColor(4)"><fa-icon *ngIf="item.defaultmat" [icon]="faCheck"></fa-icon></td>
+        <td><a [routerLink]="['/matiereedit', item.id]"><fa-icon [icon]="faEdit"></fa-icon></a></td>
+        <td><a [routerLink]="['/matieredelete', item.id]"><fa-icon [icon]="faTrashAlt"></fa-icon></a></td>
+    </tr>
+    <tr *ngIf="!items || !items.length">
+        <td colspan="5">Aucune matière trouvée</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<br />

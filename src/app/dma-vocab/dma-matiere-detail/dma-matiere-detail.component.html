@@ -1,0 +1,49 @@
+<form *ngIf="item" #it="ngForm" (ngSubmit)="onSubmit(it)" novalidate>
+  <div class="d-flex flex-column p-2">
+    <div *ngIf="item.id === 0">
+      <h3>Nouveau</h3>
+    </div>
+    <div *ngIf="item.id > 0">
+      <h3>Modifier</h3><label>ID: {{item.id}}</label>
+    </div>
+    <div class="form-group">
+      <label>Intitulé de la matière</label>
+      <input type="text" class="form-control" id="intitule" required [(ngModel)]="item.intitule" name="intitule"
+        #intitule="ngModel">
+      <div [hidden]="intitule.valid || intitule.pristine" class="alert alert-danger">
+        L'intitulé de la matière est obligatoire
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Libellé Question</label>
+      <input type="text" class="form-control" id="questionlabel" required [(ngModel)]="item.questionlabel"
+        name="questionlabel" #questionlabel="ngModel">
+      <div [hidden]="questionlabel.valid || questionlabel.pristine" class="alert alert-danger">
+        Le libellé de la question est obligatoire
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Libellé Réponse</label>
+      <input type="text" class="form-control" id="reponselabel" required [(ngModel)]="item.reponselabel"
+        name="reponselabel" #reponselabel="ngModel">
+      <div [hidden]="reponselabel.valid || reponselabel.pristine" class="alert alert-danger">
+        Le libellé de la réponse est obligatoire
+      </div>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="checkbox" [value]="item.bidirectionnel" [(ngModel)]="item.bidirectionnel" name="bidirectionnel" />
+        Interroger dans les deux sens.
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="checkbox" [value]="item.defaultmat" [(ngModel)]="item.defaultmat" name="defaultmat" />
+        Matière par défaut.
+      </label>
+    </div>
+    <div class="d-flex flex-row">
+      <button type="submit" class="btn btn-dark m-1" [disabled]="!it.form.valid">Sauvegarder</button>
+    </div>
+  </div>
+</form>

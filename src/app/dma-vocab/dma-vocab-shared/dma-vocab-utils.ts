@@ -1,12 +1,19 @@
 import { IVocabItem } from './interfaces';
+import { IconDefinition, faExchangeAlt, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 
 export class DmaVocabUtils {
+  colorsByNumbers: { [id: number]: string; } = {
+    0: 'darkred',
+    1: 'orangered',
+    2: 'darkorange',
+    3: 'gold',
+    4: 'green'};
   getColor(maitrise: number): string {
-    if (maitrise === 0) { return 'darkred'; }
-    if (maitrise === 1) { return 'orangered'; }
-    if (maitrise === 2) { return 'darkorange'; }
-    if (maitrise === 3) { return 'gold'; }
-    if (maitrise === 4) { return 'green'; }
+    let color = '';
+    if (maitrise >= 0 && maitrise <= 4) {
+      color = this.colorsByNumbers[maitrise];
+    }
+    return color;
   }
   correct(item: IVocabItem) {
     if (item.maitrise < 2) {
@@ -27,5 +34,12 @@ export class DmaVocabUtils {
       item.maitrise--;
       item.niveau = 0;
     }
+  }
+  getIcon(bidirectionnel: boolean): IconDefinition {
+    let icon: IconDefinition = faExchangeAlt;
+    if (!bidirectionnel) {
+      icon = faLongArrowAltRight;
+    }
+    return icon;
   }
 }

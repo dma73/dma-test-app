@@ -7,10 +7,16 @@ import { DmaVocabLessonComponent } from './dma-vocab/dma-vocab-lesson/dma-vocab-
 import { DmaVocabTestComponent } from './dma-vocab/dma-vocab-test/dma-vocab-test.component';
 import { DmaMathPolyComponent } from './dma-math/dma-math-poly/dma-math-poly.component';
 import { DmaVocabImportComponent } from './dma-vocab/dma-vocab-import/dma-vocab-import.component';
+import { DmaMatiereListComponent } from './dma-vocab/dma-matiere-list/dma-matiere-list.component';
+import { DmaMatiereDetailComponent } from './dma-vocab/dma-matiere-detail/dma-matiere-detail.component';
+import { DmaMatiereDeleteComponent } from './dma-vocab/dma-matiere-delete/dma-matiere-delete.component';
 
 
 const routes: Routes = [
   { path: 'vocablist', component: DmaVocabListComponent },
+  { path: 'matierelist', component: DmaMatiereListComponent },
+  { path: 'matiereedit/:id', component: DmaMatiereDetailComponent},
+  { path: 'matieredelete/:id', component: DmaMatiereDeleteComponent},
   { path: 'edit/:id/:theme', component: DmaVocabDetailComponent},
   { path: 'delete/:id/:theme', component: DmaVocabDeleteComponent},
   { path: 'vocablesson/:theme', component: DmaVocabLessonComponent},

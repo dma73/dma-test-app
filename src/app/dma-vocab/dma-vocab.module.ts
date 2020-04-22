@@ -13,6 +13,9 @@ import { RouterModule } from '@angular/router';
 import { CapitalizeFirstPipe } from './dma-vocab-shared/capitalizefirst.pipe';
 import { InputFocusDirective } from './dma-vocab-shared/input-focus-directive';
 import { DmaVocabImportComponent } from './dma-vocab-import/dma-vocab-import.component';
+import { DmaMatiereListComponent } from './dma-matiere-list/dma-matiere-list.component';
+import { DmaMatiereDeleteComponent } from './dma-matiere-delete/dma-matiere-delete.component';
+import { DmaMatiereDetailComponent } from './dma-matiere-detail/dma-matiere-detail.component';
 
 @NgModule({
   imports: [
@@ -32,7 +35,10 @@ import { DmaVocabImportComponent } from './dma-vocab-import/dma-vocab-import.com
     DmaVocabDeleteComponent,
     DmaVocabLessonComponent,
     DmaVocabTestComponent,
-    DmaVocabImportComponent
+    DmaVocabImportComponent,
+    DmaMatiereListComponent,
+    DmaMatiereDetailComponent,
+    DmaMatiereDeleteComponent
   ],
   exports: [
   ]

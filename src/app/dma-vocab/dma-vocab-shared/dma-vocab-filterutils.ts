@@ -10,20 +10,28 @@ export class DmaVocabFilterutils {
     if (filter !== '') {
       if (items) {
         items.forEach((item) => {
-          if (criteria === 'theme' && item.theme.toLowerCase() === filter.toLowerCase()) {
-            filtered.push(item);
-          }
-          if (criteria === 'maitrise' && item.maitrise === +filter) {
-            filtered.push(item);
-          }
-          if (criteria === 'matiere' && +item.matiereid === +filter) {
-            filtered.push(item);
-          }
+          this.filter(criteria, item, filter, filtered);
         });
       }
     } else {
       filtered = items;
     }
     return filtered;
+  }
+  filter(criteria: string, item: IVocabItem, filter: string, filtered: IVocabItem[]) {
+    if (criteria === 'theme') {
+      this.applyFilter(filtered, item.theme.toLowerCase(), filter.toLowerCase(), item);
+    }
+    if (criteria === 'maitrise') {
+      this.applyFilter(filtered, item.maitrise, +filter, item);
+    }
+    if (criteria === 'matiere' ) {
+      this.applyFilter(filtered, item.matiereid, +filter, item);
+    }
+  }
+  applyFilter( filtered: IVocabItem[], value, filter, item: IVocabItem) {
+    if (value === filter) {
+      filtered.push(item);
+    }
   }
 }

@@ -1,6 +1,6 @@
 <header id="header">
   <nav class="navbar navbar-dark navbar-expand-sm static-top" style="background-color: #317db4;" id=navigation>
-  <a href="#" class="navbar-brand">Matière</a>
+    <a [routerLink]="['/matierelist']" class="navbar-brand">Matière</a>
   <div class="navbar-dark m-2">
     <select style="background-color: #317db4;" class="navbar-dark navbar-brand" [(ngModel)]="matiereid" (ngModelChange)="refresh()" name="matiere">
       <option *ngFor="let matiere of matieres" [ngValue]="matiere.id" class="navbar-dark navbar-brand">{{matiere.intitule}}</option>

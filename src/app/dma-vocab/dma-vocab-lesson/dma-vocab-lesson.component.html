@@ -3,16 +3,17 @@
     <h4 *ngIf="matiereItem">{{matiereItem.intitule}} - Thèmes</h4>
   </div>
   <div class="d-flex flex-row align-items-center m-2">
-  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, current]"><b>Nouveau Mot </b>
-    <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
-  </button>
-  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, 'nouveau']"><b>Nouveau Thème </b>
-    <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
-  </button>
-  <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer </b>
-    <fa-icon [icon]="faGraduationCap" size="1x"> </fa-icon>
-  </button>
-</div>
+    <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, current]"><b>Nouveau Mot </b>
+      <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
+    </button>
+    <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, 'nouveau']"><b>Nouveau Thème </b>
+      <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
+    </button>
+    <button *ngIf="current" type="submit" class="btn btn-dark m-2" [routerLink]="['/vocabtest', current]"><b>Evaluer
+      </b>
+      <fa-icon [icon]="faGraduationCap" size="1x"> </fa-icon>
+    </button>
+  </div>
 </div>
 <div class="m-2">
   <select [(ngModel)]="current" (ngModelChange)="refresh()">
@@ -26,6 +27,7 @@
       <th *ngIf="matiereItem">{{matiereItem.reponselabel | capitalizeFirst}}</th>
       <th>Contexte</th>
       <th>Maitrise</th>
+      <th>Direction</th>
       <th class="border-top-0"> </th>
       <th class="border-top-0"> </th>
     </thead>
@@ -36,6 +38,9 @@
         <td>{{ word.contexte | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(word.maitrise)">
           <fa-icon [icon]="faGraduationCap"></fa-icon>
+        </td>
+        <td [style.color]="utils.getColor(4)">
+          <fa-icon [icon]="utils.getIcon(word.bidirectionnel)"></fa-icon>
         </td>
         <td><a [routerLink]="['/edit', word.id, word.theme]">
             <fa-icon [icon]="faEdit"></fa-icon>

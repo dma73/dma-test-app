@@ -88,8 +88,8 @@ export class MatiereService {
     rv = (filtered && filtered.length > 0 ? filtered[0] : undefined);
     return rv;
   }
-  checkIntitule(item: IMatiereItem, intitule: string ): boolean {
-    return  item.intitule && intitule && (item.intitule.toLowerCase() === intitule.toLowerCase());
+  checkIntitule(item: IMatiereItem, intitule: string): boolean {
+    return item.intitule && intitule && (item.intitule.toLowerCase() === intitule.toLowerCase());
   }
 
   filterDefault(items: IMatiereItem[]): IMatiereItem[] {
@@ -127,10 +127,22 @@ export class MatiereService {
     return this.http.put<IMatiereItem>(environment.baseurl + '/matiereitems' + '/' + id, item)
       .pipe(
         map((saveditem) => {
-            this.updateCache(saveditem);
-            return saveditem;
-          })
+          this.updateCache(saveditem);
+          if (item.defaultmat) {
+            this.changeDefault(item);
+          }
+          return saveditem;
+        })
       );
+  }
+
+  changeDefault(newDefaultItem: IMatiereItem) {
+    this.items.forEach((item) => {
+      if (item.id !== newDefaultItem.id && item.defaultmat) {
+        item.defaultmat = false;
+        this.saveMatiereItem(item.id, item).subscribe();
+      }
+    });
   }
 
   getFirstItem(wrapper: IRESTfulMatiereItemList): IMatiereItem {

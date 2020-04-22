@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../dma-vocab-core/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
-import { NgForm } from '@angular/forms';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-dma-vocab-detail',
@@ -24,13 +22,16 @@ export class DmaVocabDetailComponent implements OnInit {
               private router: Router) {
   }
 
-  ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+  initTheme() {
     this.theme = this.route.snapshot.paramMap.get('theme');
     if (this.theme === 'nouveau') {
       this.theme = '';
       this.newtheme = true;
     }
+  }
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.initTheme();
     this.matiereService.getCurrentOrDefaultItem().subscribe(
       (matiereItem: IMatiereItem) => {
         this.matiere = matiereItem;
@@ -49,12 +50,11 @@ export class DmaVocabDetailComponent implements OnInit {
         }
       });
   }
-  onSubmit(it: NgForm) {
+  onSubmit() {
     this.submitted = true;
     this.dataService.saveVocabItem(+(this.vocabItem).id, this.vocabItem).subscribe((vocabItem: IVocabItem) => {
       this.vocabItem = vocabItem;
       this.submitted = false;
-      // this.location.back();
       if (this.newtheme) {
         this.theme = vocabItem.theme;
         this.newtheme = false;

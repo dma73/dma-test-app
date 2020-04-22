@@ -45,27 +45,30 @@ importMatieres() {
     console.log(data);
     this.matieres = JSON.parse(data) as IMatiereImport[];
     this.matieres.forEach((item) => {
-      let saved: IMatiereItem =  this.matiereService.getItemByIntitule(item.Intitule);
-      if (saved !== undefined) {
-        item = this.copyMatiere(saved, item);
-      } else {
-        saved = {} as IMatiereItem;
-        saved.intitule = item.Intitule;
-        saved.questionlabel = item.LabelQuestion;
-        saved.reponselabel = item.LabelReponse;
-        saved.bidirectionnel = true;
-        saved.defaultmat = false;
-        saved.id = 0;
-      }
-      this.matiereService.saveMatiereItem(saved.id, saved)
-      .subscribe((savedItem) => {
-        item.Id = savedItem.id;
-        console.log(item.FileName, savedItem.id, item.Id);
-      });
+       this.processItem(item);
     });
     this.refresh();
   };
   fileReader.readAsText(this.matiereFile);
+}
+processItem(item: IMatiereImport) {
+  let saved: IMatiereItem =  this.matiereService.getItemByIntitule(item.Intitule);
+  if (saved !== undefined) {
+    item = this.copyMatiere(saved, item);
+  } else {
+    saved = {} as IMatiereItem;
+    saved.intitule = item.Intitule;
+    saved.questionlabel = item.LabelQuestion;
+    saved.reponselabel = item.LabelReponse;
+    saved.bidirectionnel = true;
+    saved.defaultmat = false;
+    saved.id = 0;
+  }
+  this.matiereService.saveMatiereItem(saved.id, saved)
+  .subscribe((savedItem) => {
+    item.Id = savedItem.id;
+    console.log(item.FileName, savedItem.id, item.Id);
+  });
 }
 refresh() {
   if (this.matieres && this.matieres.length > 0) {

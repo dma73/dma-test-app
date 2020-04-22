@@ -17,7 +17,7 @@ export class DmaVocabDeleteComponent implements OnInit {
   vocabItem: IVocabItem;
   theme = '';
   constructor(private dataService: DataService,
-    private route: ActivatedRoute, private router: Router) { }
+              private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

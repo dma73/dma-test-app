@@ -10,10 +10,12 @@ import { DmaVocabImportComponent } from './dma-vocab/dma-vocab-import/dma-vocab-
 import { DmaMatiereListComponent } from './dma-vocab/dma-matiere-list/dma-matiere-list.component';
 import { DmaMatiereDetailComponent } from './dma-vocab/dma-matiere-detail/dma-matiere-detail.component';
 import { DmaMatiereDeleteComponent } from './dma-vocab/dma-matiere-delete/dma-matiere-delete.component';
+import { DmaTabularListComponent } from './dma-vocab/dma-tabular-list/dma-tabular-list.component';
 
 
 const routes: Routes = [
-  { path: 'vocablist', component: DmaVocabListComponent },
+  // { path: 'vocablist', component: DmaVocabListComponent },
+  { path: 'vocablist', component: DmaTabularListComponent },
   { path: 'matierelist', component: DmaMatiereListComponent },
   { path: 'matiereedit/:id', component: DmaMatiereDetailComponent},
   { path: 'matieredelete/:id', component: DmaMatiereDeleteComponent},

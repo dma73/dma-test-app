@@ -1,33 +1,26 @@
-<form *ngIf="vocabItem" #it="ngForm" (ngSubmit)="onSubmit()" novalidate>
+<form *ngIf="tabularItem" #it="ngForm" (ngSubmit)="onSubmit()" novalidate>
 
   <div class="d-flex flex-column p-2">
     <h3>Matière: {{matiere.intitule}}</h3>
-    <div *ngIf="vocabItem.id === 0"><h3>Nouveau</h3></div>
-    <div *ngIf="vocabItem.id > 0"><h3>Modifier</h3><label>ID: {{vocabItem.id}}</label></div>
-    <div class="form-group">
-      <label>{{matiere.questionlabel}}</label>
-      <input type="text" class="form-control" id="question" required [(ngModel)]="vocabItem.question" name="question"
-        #question="ngModel">
-      <div [hidden]="question.valid || question.pristine" class="alert alert-danger">
-        Name is required
-      </div>
-    </div>
-    <div class="form-group">
-      <label>{{matiere.reponselabel}}</label>
-      <input type="text" class="form-control" id="reponse" required [(ngModel)]="vocabItem.reponse" name="reponse"
-        #reponse="ngModel">
-      <div [hidden]="reponse.valid || reponse.pristine" class="alert alert-danger">
-        Name is required
-      </div>
+    <div *ngIf="tabularItem.id === 0"><h3>Nouveau</h3></div>
+    <div *ngIf="tabularItem.id > 0"><h3>Modifier</h3><label>ID: {{tabularItem.id}}</label></div>
+    <div *ngFor="let item of tabularItem.reponse let idx= index;trackBy:indexTracker" class="form-group">
+      <label>{{headers[idx] | capitalizeFirst}}</label>
+      <input type="text" class="form-control" id="{{idx}}" required [(ngModel)]="tabularItem.reponse[idx]" name="{{idx}}">
+      <!--#field="ngModel">-->
+      {{tabularItem.reponse[idx]}}
+      <!--<div [hidden]="field.valid || field.pristine" class="alert alert-danger">
+        {{headers[i]}} is required
+      </div>-->
     </div>
     <div class="form-group">
       <label>Contexte</label>
-      <input type="text" class="form-control" id="contexte" [(ngModel)]="vocabItem.contexte" name="contexte"
+      <input type="text" class="form-control" id="contexte" [(ngModel)]="tabularItem.contexte" name="contexte"
         #contexte="ngModel">
     </div>
     <div *ngIf="!theme" class="form-group">
       <label>Theme</label>
-      <input type="text" class="form-control" id="theme" required [(ngModel)]="vocabItem.theme" name="theme"
+      <input type="text" class="form-control" id="theme" required [(ngModel)]="tabularItem.theme" name="theme"
         #theme="ngModel">
       <div [hidden]="theme.valid || theme.pristine" class="alert alert-danger">
         Name is required
@@ -38,7 +31,7 @@
     </div>
     <div class="form-check">
       <label class="form-check-label">
-        <input type="checkbox" [value]="vocabItem.bidirectionnel" [(ngModel)]="vocabItem.bidirectionnel" name="bidirectionnel"/>
+        <input type="checkbox" [value]="tabularItem.bidirectionnel" [(ngModel)]="tabularItem.bidirectionnel" name="bidirectionnel"/>
         Interroger dans les deux sens.
       </label>
     </div>

@@ -1,14 +1,13 @@
-<ng-template [ngIf]="vocabItem">
+<ng-template [ngIf]="tabularItem">
   <form (ngSubmit)="onSubmit()" novalidate>
     <div class="d-flex flex-column p-2">
         <h3>Supprimer</h3>
-        <ng-template [ngIf]="vocabItem.id > 0">
-          <label>ID: {{vocabItem.id}}</label>
+        <ng-template [ngIf]="tabularItem.id > 0">
+          <label>ID: {{tabularItem.id}}</label>
         </ng-template>
-        <label>Anglais: {{vocabItem.question}}</label>
-        <label>Français: {{vocabItem.reponse}}</label>
-        <label>Contexte: {{vocabItem.contexte}}</label>
-        <label>Thème: {{vocabItem.theme}}</label>
+        <label *ngFor="let item of tabularItem.reponse let idx= index">{{headers[idx] | capitalizeFirst}}: {{item}}</label>
+        <label>Contexte: {{tabularItem.contexte}}</label>
+        <label>Thème: {{tabularItem.theme}}</label>
         <div class="d-flex flex-row">
         <button type="submit" class="btn btn-dark m-1">Confirmer</button>
         <button class="btn btn-secondary m-1" (click)="cancel()">Annuler</button>

@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex flex-row align-items-center m-2">
+    <h4 *ngIf="matiere">{{matiere.intitule}} - Liste </h4>
+    <h6 *ngIf="items && items.length" class="ml-2 mt-1">( {{ items.length }} Mots)</h6>
+  </div>
+  <button type="submit" class="btn btn-dark m-2" [routerLink]="['/edit', 0, '']"><b>Ajouter </b>
+    <fa-icon [icon]="faPlus" size="1x"> </fa-icon>
+  </button>
+</div>
+<div class="dma-panel m-2 border">
+  <table class="table table-striped w-auto border-top-0 border-right border-bottom">
+    <thead class="border-top-0">
+      <tr class="border-top-0">
+        <th class="border-top-0" *ngFor="let header of headers">{{header | capitalizeFirst}}</th>
+        <th class="border-top-0">Contexte</th>
+        <th class="border-top-0">Thème</th>
+        <th class="border-top-0">Maitrise</th>
+        <th class="border-top-0">Direction</th>
+        <th class="border-top-0"> </th>
+        <th class="border-top-0"> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td *ngFor="let data of item.reponse">{{ data | capitalizeFirst }}</td>
+        <td>{{ item.contexte | capitalizeFirst }}</td>
+        <td>{{ item.theme | capitalizeFirst }}</td>
+        <td [style.color]="utils.getColor(item.maitrise)">
+          <fa-icon [icon]="faGraduationCap"></fa-icon>
+        </td>
+        <td [style.color]="utils.getColor(4)">
+          <fa-icon [icon]="utils.getIcon(item.bidirectionnel)"></fa-icon>
+        </td>
+        <td><a [routerLink]="['/edit', item.id, '']">
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </a></td>
+        <td><a [routerLink]="['/delete', item.id, '']">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </a></td>
+      </tr>
+      <tr *ngIf="!items || !items.length">
+        <td colspan="5">Aucun mot trouvé</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../dma-vocab-core/data.service';
+import { VocabService } from '../dma-vocab-core/vocab.service';
 import { IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 export class DmaMatiereDeleteComponent implements OnInit {
   item: IMatiereItem;
   block = true;
-  constructor(private service: MatiereService, private vocabService: DataService,
+  constructor(private service: MatiereService, private vocabService: VocabService,
               private route: ActivatedRoute, private router: Router, private filterUtils: DmaVocabFilterutils) { }
 
   ngOnInit() {

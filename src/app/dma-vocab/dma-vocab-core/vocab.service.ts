@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class DataService {
+export class VocabService {
     items: IVocabItem[] = new Array<IVocabItem>();
     baseUrl = 'assets/';
 
@@ -106,7 +106,7 @@ export class DataService {
             this.deleteCache(id);
             return deleteditem;
           })
-      );;
+      );
     }
 
     private handleError(error: any) {

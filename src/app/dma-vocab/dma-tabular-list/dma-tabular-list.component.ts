@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
 import {
   faEdit,
   faTrashAlt,
@@ -14,18 +14,20 @@ import { MatiereService } from '../dma-vocab-core/matiere.service';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 
 @Component({
-  selector: 'app-dma-vocab-list',
-  templateUrl: './dma-vocab-list.component.html',
-  styleUrls: ['./dma-vocab-list.component.css']
+  selector: 'app-dma-tabular-list',
+  templateUrl: './dma-tabular-list.component.html',
+  styleUrls: ['./dma-tabular-list.component.css']
 })
-export class DmaVocabListComponent implements OnInit, OnDestroy {
+export class DmaTabularListComponent implements OnInit, OnDestroy {
+
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
   faPlus = faPlus;
   faGraduationCap = faGraduationCap;
   capitalizeFirst: CapitalizeFirstPipe;
-  items: IVocabItem[];
+  items: ITabularItem[];
   title: string;
+  headers: string[];
   utils: DmaVocabUtils = new DmaVocabUtils();
   matiere: IMatiereItem;
   subscription: Subscription;
@@ -38,11 +40,14 @@ export class DmaVocabListComponent implements OnInit, OnDestroy {
     this.subscription = this.matiereService.getMatiere().subscribe(matiere => {
       if (matiere) {
         this.matiere = matiere;
+        this.loadHeaders(matiere);
         this.loadData(matiere);
       }
     });
-   }
-
+  }
+  loadHeaders(matiere: IMatiereItem) {
+      this.headers = this.utils.initHeaders(matiere);
+  }
   ngOnInit() {
     this.matiereService
       .getCurrentOrDefaultItem()
@@ -51,33 +56,22 @@ export class DmaVocabListComponent implements OnInit, OnDestroy {
       });
   }
   loadData(matiereItem: IMatiereItem) {
-        this.matiere = matiereItem;
-        // console.log('list loadData initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
-        this.dataService
-          .getVocabItems()
-          .subscribe((vocabItems: IVocabItem[]) => {
-            this.items = this.filterUtils.getFilteredItems(
-              'matiere',
-              '' + this.matiere.id,
-              vocabItems
-            );
-          });
+    this.matiere = matiereItem;
+    // console.log('list loadData initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
+    this.dataService
+      .getVocabItems()
+      .subscribe((vocabItems: IVocabItem[]) => {
+        this.items = new Array<ITabularItem>();
+        this.filterUtils.getFilteredItems(
+          'matiere',
+          '' + this.matiere.id,
+          vocabItems
+        ).forEach((item) => {
+          this.items.push(this.utils.vocabToTabular(item));
+        });
+      });
 
   }
-  onDelete(id: number) {
-    console.log('delete id:' + id);
-    this.dataService.deleteVocabItem(id).subscribe({
-      next: (vocabItem: IVocabItem) => {
-        this.items.splice(
-          this.items.findIndex(d => d.id === id),
-          1
-        );
-        console.log('items:' + this.items);
-      },
-      error: null
-    });
-  }
-  onSort(colname: string) { }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

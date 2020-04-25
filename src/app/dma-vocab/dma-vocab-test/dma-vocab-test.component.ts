@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
-import { DataService } from '../dma-vocab-core/data.service';
+import { VocabService } from '../dma-vocab-core/vocab.service';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 
@@ -29,9 +29,8 @@ export class DmaVocabTestComponent implements OnInit {
   error = false;
   matiere: IMatiereItem;
 
-  constructor(private dataService: DataService,
+  constructor(private vocabService: VocabService,
               private route: ActivatedRoute,
-              private router: Router,
               private filterUtils: DmaVocabFilterutils,
               private matiereService: MatiereService) { }
 
@@ -45,7 +44,7 @@ export class DmaVocabTestComponent implements OnInit {
       .subscribe((matiere: IMatiereItem) => {
         this.matiere = matiere;
         console.log('createTest initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
-        this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
+        this.vocabService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
           let items: IVocabItem[] = new Array<IVocabItem>();
 
           items = this.filterUtils.getFilteredItems('theme', this.theme,
@@ -161,7 +160,7 @@ export class DmaVocabTestComponent implements OnInit {
     } else {
       this.utils.incorrect(this.testItem);
     }
-    this.dataService.saveVocabItem(+(this.testItem).id, this.testItem).subscribe(
+    this.vocabService.saveVocabItem(+(this.testItem).id, this.testItem).subscribe(
       (vocabItem: IVocabItem) => {
         this.savedItem = vocabItem;
       });

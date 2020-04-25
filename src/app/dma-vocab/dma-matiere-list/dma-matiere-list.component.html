@@ -19,8 +19,8 @@
     <tbody>
     <tr *ngFor="let item of items">
       <td>{{ item.intitule | capitalizeFirst }}</td>
-        <td>{{ item.reponselabel | capitalizeFirst }}</td>
         <td>{{ item.questionlabel | capitalizeFirst }}</td>
+        <td>{{ item.reponselabel | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(4)"><fa-icon [icon]="utils.getIcon(item.bidirectionnel)"></fa-icon></td>
         <td [style.color]="utils.getColor(4)"><fa-icon *ngIf="item.defaultmat" [icon]="faCheck"></fa-icon></td>
         <td><a [routerLink]="['/matiereedit', item.id]"><fa-icon [icon]="faEdit"></fa-icon></a></td>

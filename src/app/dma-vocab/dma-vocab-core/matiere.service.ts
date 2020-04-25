@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { IMatiereItem, IRESTfulMatiereItemList, IMatiereItemList } from '../dma-vocab-shared/interfaces';
 import { environment } from 'src/environments/environment';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,27 @@ export class MatiereService {
   private activeMatiere: IMatiereItem;
   private subject = new Subject<IMatiereItem>();
   private items: IMatiereItem[] = new Array<IMatiereItem>();
+  private lastThemes: { [id: number]: string; } = {};
 
   setMatiere(matiereitem: IMatiereItem[]) {
     if (matiereitem && matiereitem.length) {
-      this.subject.next(matiereitem[0]);
       this.activeMatiere = matiereitem[0];
+      this.subject.next(matiereitem[0]);
     }
+  }
+
+  setLastTheme(theme: string) {
+    this.lastThemes[this.activeMatiere.id] = theme;
+    const rv = this.lastThemes[this.activeMatiere.id];
+  }
+
+  getLastTheme(): string {
+    let rv: string;
+    try {
+      rv = this.lastThemes[this.activeMatiere.id];
+    } catch {
+    }
+    return rv;
   }
 
   clearMatiere() {

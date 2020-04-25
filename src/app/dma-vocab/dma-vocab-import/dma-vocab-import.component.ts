@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMatiereImport, IVocabItemImport, IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
-import { DataService } from '../dma-vocab-core/data.service';
+import { VocabService } from '../dma-vocab-core/vocab.service';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class DmaVocabImportComponent implements OnInit {
   matieres: IMatiereImport[];
   items: IVocabItemImport[];
   label: string;
-  constructor(private dataService: DataService, private matiereService: MatiereService) { }
+  constructor(private vocabService: VocabService, private matiereService: MatiereService) { }
 
   ngOnInit() {
   }
@@ -96,7 +96,7 @@ importMatiere() {
       tosave.bidirectionnel = true;
       tosave.contexte = '';
       console.log(item.Question, item.Maitrise, tosave.question, tosave.maitrise, tosave.niveau);
-      this.dataService.saveVocabItem(0, tosave).subscribe((vocabItem) => count ++);
+      this.vocabService.saveVocabItem(0, tosave).subscribe((vocabItem) => count ++);
     });
     console.log(count + ' items saved');
     this.file = undefined;

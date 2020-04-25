@@ -7,9 +7,11 @@ export interface IMatiereItem {
   defaultmat: boolean;
   _links?: object;
 }
-export interface IVocabItem {
-  question: string;
+export interface IVocabItem extends IDataItem {
   reponse: string;
+}
+export interface IDataItem {
+  question: string;
   id: number;
   maitrise: number;
   niveau: number;
@@ -18,6 +20,9 @@ export interface IVocabItem {
   bidirectionnel: boolean;
   matiereid: number;
   _links?: object;
+}
+export interface ITabularItem extends IDataItem {
+  reponse: string[];
 }
 
 export interface IRESTfulVocabItemList {

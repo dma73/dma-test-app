@@ -16,6 +16,7 @@ import { DmaVocabImportComponent } from './dma-vocab-import/dma-vocab-import.com
 import { DmaMatiereListComponent } from './dma-matiere-list/dma-matiere-list.component';
 import { DmaMatiereDeleteComponent } from './dma-matiere-delete/dma-matiere-delete.component';
 import { DmaMatiereDetailComponent } from './dma-matiere-detail/dma-matiere-detail.component';
+import { DmaTabularListComponent } from './dma-tabular-list/dma-tabular-list.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { DmaMatiereDetailComponent } from './dma-matiere-detail/dma-matiere-deta
     InputFocusDirective,
     DmaVocabDeleteComponent,
     DmaVocabListComponent,
+    DmaTabularListComponent,
     DmaVocabDetailComponent,
     DmaVocabDeleteComponent,
     DmaVocabLessonComponent,

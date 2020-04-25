@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
-import { DataService } from '../dma-vocab-core/data.service';
+import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { VocabService } from '../dma-vocab-core/vocab.service';
 import { faGraduationCap, faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
@@ -22,20 +22,23 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
   words: IVocabItem[];
   current = '';
-  currentLesson: IVocabItem[] = new Array<IVocabItem>();
+  currentLesson: ITabularItem[] = new Array<ITabularItem>();
   utils: DmaVocabUtils = new DmaVocabUtils();
   matiereItem: IMatiereItem;
   subscription: Subscription;
   theme: string = undefined;
+  headers: string[];
 
-  constructor(private dataService: DataService,
+  constructor(private vocabService: VocabService,
               private filterUtils: DmaVocabFilterutils,
               private matiereService: MatiereService,
               private route: ActivatedRoute) {
     this.subscription = this.matiereService.getMatiere()
       .subscribe(matiere => {
         if (matiere) {
+          this.theme = '';
           this.matiereItem = matiere;
+          this.loadHeaders(matiere);
           this.loadData(matiere);
         }
       });
@@ -45,14 +48,19 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
     console.log('ngOnInit()');
     this.theme = this.route.snapshot.paramMap.get('theme');
     this.matiereService.getCurrentOrDefaultItem()
-      .subscribe((matiereItem: IMatiereItem) =>
-        this.loadData(matiereItem));
+      .subscribe((matiereItem: IMatiereItem) => {
+        this.loadHeaders(matiereItem);
+        this.loadData(matiereItem);
+      });
+  }
+  loadHeaders(matiere: IMatiereItem) {
+    this.headers = this.utils.initHeaders(matiere);
 
   }
   loadData(matiereItem: IMatiereItem) {
-    console.log('loadData: ' + matiereItem);
+    console.log('loadData: ', matiereItem.intitule);
     this.matiereItem = matiereItem;
-    this.dataService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
+    this.vocabService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
       this.words = this.filterUtils.getFilteredItems(
         'matiere',
         '' + this.matiereItem.id,
@@ -62,19 +70,30 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  setCurrent(vocabitem: IVocabItem) {
+    if (this.notempty(this.theme)) {
+      console.log('setCurrent not empty:', this.theme);
+      this.current = CapitalizeFirstPipe.toFirstCap(this.theme);
+      this.refresh();
+    } else if (this.lessons.size === 0) {
+      const theme = (this.matiereService.getLastTheme() ? this.matiereService.getLastTheme() : vocabitem.theme);
+      console.log('setCurrent empty:', vocabitem.theme, this.matiereService.getLastTheme());
+      this.current = CapitalizeFirstPipe.toFirstCap(theme);
+      this.refresh();
+    }
+    this.matiereService.setLastTheme(this.current);
+  }
   buildList() {
     this.lessons.clear();
     this.words.forEach((vocabitem: IVocabItem) => {
-      if (this.theme) {
-        this.current = CapitalizeFirstPipe.toFirstCap(this.theme);
-        this.refresh();
-      } else if (this.lessons.size === 0) {
-        this.current = CapitalizeFirstPipe.toFirstCap(vocabitem.theme);
-        this.refresh();
-      }
+      this.setCurrent(vocabitem);
       this.lessons.add(CapitalizeFirstPipe.toFirstCap(vocabitem.theme));
     });
     this.lessons = this.sortSet(this.lessons);
+  }
+  notempty(s: string): boolean {
+    return (s && s.trim().length > 0);
   }
   sortSet(set: Set<string>): Set<string> {
     const sorted = new Set<string>();
@@ -85,7 +104,11 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   }
   refresh() {
     if (this.current !== '') {
-      this.currentLesson = this.filterUtils.getFilteredItems('theme', this.current, this.words);
+      this.currentLesson = new Array<ITabularItem>();
+      this.filterUtils.getFilteredItems('theme', this.current, this.words).forEach((item) => {
+        this.currentLesson.push(this.utils.vocabToTabular(item));
+        this.matiereService.setLastTheme(this.current);
+      });
     }
   }
   ngOnDestroy() {

@@ -54,17 +54,21 @@ export class DmaVocabTestComponent implements OnInit {
               vocabItems
             )
           );
-          this.testItems = new Array<IVocabItem>();
-          this.addTestItemsPerMaitrise(1, 4, items);
-          this.addTestItemsPerMaitrise(3, 3, items);
-          this.addTestItemsPerMaitrise(6, 2, items);
-          this.addTestItemsPerMaitrise(10, 1, items);
-          this.addTestItemsPerMaitrise(20, 0, items);
-          this.testSize = this.testItems.length;
+          this.addTestItems(items);
           this.showQuestion();
         });
       });
   }
+  private addTestItems(items: IVocabItem[]) {
+    this.testItems = new Array<IVocabItem>();
+    this.addTestItemsPerMaitrise(1, 4, items);
+    this.addTestItemsPerMaitrise(3, 3, items);
+    this.addTestItemsPerMaitrise(6, 2, items);
+    this.addTestItemsPerMaitrise(10, 1, items);
+    this.addTestItemsPerMaitrise(20, 0, items);
+    this.testSize = this.testItems.length;
+  }
+
   private randomInt(max: number): number {
     const rv: number = Math.floor(Math.random() * (max));
     console.log('random(' + max + ') = ' + rv);
@@ -104,39 +108,34 @@ export class DmaVocabTestComponent implements OnInit {
       this.reponse = '';
       this.feedback = '';
       this.buttontext = 'Valider';
-      let contexte = '';
-      if (this.testItem.contexte != null && this.testItem.contexte.length > 0) {
-        contexte = ' ( ' + this.testItem.contexte + ' ) ';
-      }
-      if (this.sens) {
-
-        this.question = this.matiere.questionlabel + ': ' + this.testItem.question + contexte;
-        this.labelreponse = this.matiere.reponselabel + ': ';
-      } else {
-        this.question = this.matiere.reponselabel + ': ' + this.testItem.reponse + contexte;
-        this.labelreponse = this.matiere.questionlabel + ': ';
-      }
+      this.setQuestionReponse();
     } else {
       this.feedback = 'Le test est terminé, vous avez ' + (this.testSize - this.errorCount) + '/' + this.testSize;
       this.buttontext = 'Nouveau Test...';
     }
+  }
+  setQuestionReponse() {
+    if (this.sens) {
+      this.question = this.matiere.questionlabel + ': ' + this.testItem.question + this.getContexte();
+      this.labelreponse = this.matiere.reponselabel + ': ';
+    } else {
+      this.question = this.matiere.reponselabel + ': ' + this.testItem.reponse + this.getContexte();
+      this.labelreponse = this.matiere.questionlabel + ': ';
+    }
+  }
+  getContexte(): string {
+    let contexte = '';
+    if (this.testItem.contexte != null && this.testItem.contexte.length > 0) {
+      contexte = ' ( ' + this.testItem.contexte + ' ) ';
+    }
+    return contexte;
   }
   checkAnswer() {
     if (this.testItems.length === 0) {
       this.createTest();
     } else {
       if (!this.error) {
-        if (!this.teste()) {
-          this.feedback = 'Réponse correcte - ' + this.matiere.questionlabel + ': <'
-            + this.testItem.question + '> Mot ' + this.matiere.reponselabel + ': <' + this.testItem.reponse + '>';
-          this.error = true;
-          this.errorCount++;
-          this.buttontext = 'Suivant';
-        } else {
-          this.feedback = '';
-          this.error = false;
-          this.showQuestion();
-        }
+        this.checkAnswerNoError();
       } else {
         this.feedback = '';
         this.error = false;
@@ -145,14 +144,32 @@ export class DmaVocabTestComponent implements OnInit {
     }
   }
 
-  teste(): boolean {
+  private checkAnswerNoError() {
+    if (!this.teste()) {
+      this.feedback = 'Réponse correcte - ' + this.matiere.questionlabel + ': <'
+        + this.testItem.question + '> Mot ' + this.matiere.reponselabel + ': <' + this.testItem.reponse + '>';
+      this.error = true;
+      this.errorCount++;
+      this.buttontext = 'Suivant';
+    } else {
+      this.feedback = '';
+      this.error = false;
+      this.showQuestion();
+    }
+  }
+  getReponse(): string {
     let reponse = '';
-    let rv = false;
     if (this.sens) {
       reponse = this.testItem.reponse;
     } else {
       reponse = this.testItem.question;
     }
+    return reponse;
+  }
+
+  teste(): boolean {
+    let rv = false;
+    const reponse = this.getReponse();
     // console.log(this.reponse + ' , ' + reponse + ' , ' + this.sens);
     if (this.check(reponse, this.reponse)) {
       this.utils.correct(this.testItem);

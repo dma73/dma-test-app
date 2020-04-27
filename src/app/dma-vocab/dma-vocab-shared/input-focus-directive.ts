@@ -7,6 +7,8 @@ export class InputFocusDirective implements AfterContentChecked {
   constructor(private element: ElementRef<HTMLInputElement>) {}
 
   ngAfterContentChecked(): void {
-    this.element.nativeElement.focus();
+    if (this.element.nativeElement.value.length === 0) {
+      this.element.nativeElement.focus();
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
@@ -12,22 +12,30 @@ import { MatiereService } from '../dma-vocab-core/matiere.service';
   styleUrls: ['./dma-vocab-test.component.css']
 })
 export class DmaVocabTestComponent implements OnInit {
-  testItems: IVocabItem[];
+  testItems: ITabularItem[];
   utils: DmaVocabUtils = new DmaVocabUtils();
   testSize = 0;
   sens = false;
-  testItem: IVocabItem;
+  testItem: ITabularItem;
   savedItem: IVocabItem;
+  enonces: string[];
+  solutions: string[];
+  reponses: string[];
+  labels: string[];
+  labelsquestions: string[];
   errorCount = 0;
   header = '';
   question = '';
   labelreponse = '';
   reponse = '';
-  feedback = '';
+  feedback = new Array<string>();
   buttontext = '';
   theme = '';
   error = false;
   matiere: IMatiereItem;
+  indexes: Array<number>;
+  questionCount = 0;
+  headers: Array<string>;
 
   constructor(private vocabService: VocabService,
               private route: ActivatedRoute,
@@ -43,6 +51,7 @@ export class DmaVocabTestComponent implements OnInit {
       .getCurrentOrDefaultItem()
       .subscribe((matiere: IMatiereItem) => {
         this.matiere = matiere;
+        this.headers = this.utils.initHeaders(matiere);
         console.log('createTest initial value: ' + (this.matiere ? this.matiere.intitule : this.matiere));
         this.vocabService.getVocabItems().subscribe((vocabItems: IVocabItem[]) => {
           let items: IVocabItem[] = new Array<IVocabItem>();
@@ -60,7 +69,7 @@ export class DmaVocabTestComponent implements OnInit {
       });
   }
   private addTestItems(items: IVocabItem[]) {
-    this.testItems = new Array<IVocabItem>();
+    this.testItems = new Array<ITabularItem>();
     this.addTestItemsPerMaitrise(1, 4, items);
     this.addTestItemsPerMaitrise(3, 3, items);
     this.addTestItemsPerMaitrise(6, 2, items);
@@ -69,14 +78,14 @@ export class DmaVocabTestComponent implements OnInit {
     this.testSize = this.testItems.length;
   }
 
-  private randomInt(max: number): number {
-    const rv: number = Math.floor(Math.random() * (max));
-    console.log('random(' + max + ') = ' + rv);
+  private randomInt(max: number, min: number): number {
+    const rv: number = min + Math.floor(Math.random() * (max - min));
+    console.log('random(', max, ' , ', min,  ') = ' + rv);
     return rv;
   }
   private randomBoolean(): boolean {
     let rv = false;
-    const rnd = this.randomInt(2);
+    const rnd = this.randomInt(2,0);
     if (rnd > 0) {
       rv = true;
     }
@@ -87,30 +96,84 @@ export class DmaVocabTestComponent implements OnInit {
     const filtered: IVocabItem[] = this.filterUtils.getFilteredItems('maitrise', '' + maitrise, vocabItems);
     if (filtered.length > 0) {
       while (this.testItems.length < count && filtered.length > 0) {
-        const rand: number = this.randomInt(filtered.length);
-        this.testItems.push(filtered[rand]);
+        const rand: number = this.randomInt(filtered.length, 0);
+        this.testItems.push(this.utils.vocabToTabular(filtered[rand]));
         filtered.splice(rand, 1);
       }
     }
   }
+  initRandom() {
+    const size = this.testItem.reponse.length;
+    this.reset();
+    console.log(size);
+    if (this.testItem.bidirectionnel) {
+      this.indexes = this.getShuffledArray(size);
+      this.questionCount = this.randomInt(this.indexes.length - 1, 1);
+    } else {
+      this.indexes = this.getArray(size);
+      this.questionCount = 1;
+    }
+    for (let i = 0; i < this.questionCount; i++) {
+      this.enonces.push(this.testItem.reponse[this.indexes[i]]);
+      this.labelsquestions.push(this.headers[this.indexes[i]]);
+    }
+    for (let i = this.questionCount; i < size; i++) {
+      this.solutions.push(this.testItem.reponse[this.indexes[i]]);
+      this.reponses.push('');
+      this.labels.push(this.headers[this.indexes[i]]);
+    }
+  }
+
+  shuffle<T>(array: Array<T>): Array<T> {
+    let currentIndex = array.length;
+    let temporaryValue: T;
+    let randomIndex: number;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+  getShuffledArray(size: number): Array<number> {
+    let array = this.getArray(size);
+    array = this.shuffle<number>(array);
+    return array;
+  }
+
+  getArray(size: number): Array<number> {
+    const array = new Array<number>(size);
+    for (let index = 0; index < size; index ++){
+      array[index] = index;
+    }
+    return array;
+  }
+
+  reset() {
+    this.enonces = new Array<string>();
+    this.solutions = new Array<string>();
+    this.reponses = new Array<string>();
+    this.labels = new Array<string>();
+    this.labelsquestions = new Array<string>();
+  }
   private showQuestion() {
     if (this.testItems.length > 0) {
-
       this.testItem = this.testItems[0];
-      if (this.testItem.bidirectionnel) {
-        this.sens = this.randomBoolean();
-      } else {
-        this.sens = true;
-      }
+      this.initRandom();
 
       this.header = this.matiere.intitule + ' - Evaluation : Question ' + (this.testSize + 1 - this.testItems.length)
         + ' de ' + this.testSize + ' -      Thème : ' + this.testItem.theme;
       this.reponse = '';
-      this.feedback = '';
+      this.feedback = new Array<string>();
       this.buttontext = 'Valider';
       this.setQuestionReponse();
     } else {
-      this.feedback = 'Le test est terminé, vous avez ' + (this.testSize - this.errorCount) + '/' + this.testSize;
+      this.feedback = ['Le test est terminé, vous avez ' + (this.testSize - this.errorCount) + '/' + this.testSize];
       this.buttontext = 'Nouveau Test...';
     }
   }
@@ -130,54 +193,53 @@ export class DmaVocabTestComponent implements OnInit {
     }
     return contexte;
   }
-  checkAnswer() {
-    if (this.testItems.length === 0) {
-      this.createTest();
-    } else {
-      if (!this.error) {
-        this.checkAnswerNoError();
+  process() {
+    if (!this.error) {
+      if (this.testItems.length === 0) {
+        // Test is finished, create a new one
+        this.createTest();
       } else {
-        this.feedback = '';
-        this.error = false;
-        this.showQuestion();
+        // Check answer and show next question if correct or error feedback if incorrect
+        this.processAfterSuccess();
       }
-    }
+    } else {
+      // Next question after error feedback
+      this.processAfterError();
+  }
   }
 
-  private checkAnswerNoError() {
-    if (!this.teste()) {
-      this.feedback = 'Réponse correcte - ' + this.matiere.questionlabel + ': <'
-        + this.testItem.question + '> Mot ' + this.matiere.reponselabel + ': <' + this.testItem.reponse + '>';
+  private processAfterError() {
+    this.feedback = new Array<string>();
+    this.error = false;
+    this.showQuestion();
+  }
+
+  private processAfterSuccess() {
+    if (!this.verifyAndUpdate()) {
+      this.feedback = new Array<string>();
+      this.feedback.push('Réponse correcte: ');
+      this.headers.forEach((s, i) => {
+        this.feedback.push(' ' + s + ': ' + this.testItem.reponse[i]);
+      });
       this.error = true;
       this.errorCount++;
       this.buttontext = 'Suivant';
     } else {
-      this.feedback = '';
+      this.feedback = new Array<string>();
       this.error = false;
       this.showQuestion();
     }
   }
-  getReponse(): string {
-    let reponse = '';
-    if (this.sens) {
-      reponse = this.testItem.reponse;
-    } else {
-      reponse = this.testItem.question;
-    }
-    return reponse;
-  }
-
-  teste(): boolean {
+  verifyAndUpdate(): boolean {
     let rv = false;
-    const reponse = this.getReponse();
     // console.log(this.reponse + ' , ' + reponse + ' , ' + this.sens);
-    if (this.check(reponse, this.reponse)) {
-      this.utils.correct(this.testItem);
+    if (this.checkAnswers()) {
+      this.utils.correct(this.utils.tabularToVocab(this.testItem));
       rv = true;
     } else {
-      this.utils.incorrect(this.testItem);
+      this.utils.incorrect(this.utils.tabularToVocab(this.testItem));
     }
-    this.vocabService.saveVocabItem(+(this.testItem).id, this.testItem).subscribe(
+    this.vocabService.saveVocabItem(+(this.testItem).id, this.utils.tabularToVocab(this.testItem)).subscribe(
       (vocabItem: IVocabItem) => {
         this.savedItem = vocabItem;
       });
@@ -186,7 +248,7 @@ export class DmaVocabTestComponent implements OnInit {
 
   }
 
-  check(expected: string, given: string): boolean {
+  compare(expected: string, given: string): boolean {
     let found = false;
     found = expected.split('|').some((value) => {
       if (value.trim().toUpperCase() === given.trim().toUpperCase()) {
@@ -194,5 +256,15 @@ export class DmaVocabTestComponent implements OnInit {
       }
     });
     return found;
+  }
+  checkAnswers() {
+    let rv = true;
+    this.solutions.forEach((v, i) => {
+      if (!this.compare(v, this.reponses[i])) {
+        rv = false;
+      }
+    });
+    return rv;
+
   }
 }

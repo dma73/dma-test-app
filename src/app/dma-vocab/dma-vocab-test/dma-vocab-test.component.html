@@ -1,20 +1,26 @@
 <div class="d-flex flex-row align-items-center m-2">
   <h4>{{header}}</h4>
 </div>
-<div class="m-2">
+<div class="m-2" *ngFor="let item of enonces let idx=index">
   <b>
-    {{question}}
+    {{labelsquestions[idx]}} : {{item}}
   </b>
 </div>
-<div class="form-group" class="m-2">
-  <label>{{labelreponse}}</label>
-  <input type="text" class="form-control" id="reponse" required [(ngModel)]="reponse" name="reponse"
-  appInputAutoFocus (keydown.enter)="checkAnswer()">
+<div *ngFor="let label of labels let idx=index" class="form-group" class="m-2">
+  <label>{{label}}</label>
+  <input *ngIf="idx===0 && labels.length > 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  appInputAutoFocus>
+  <input *ngIf="idx===0 && labels.length === 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  appInputAutoFocus (keydown.enter)="process()">
+  <input *ngIf="idx!==0 && idx === labels.length - 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  (keydown.enter)="process()">
+  <input *ngIf="idx!==0 && idx !== labels.length - 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}">
+</div>
   <div class="m-2">
-    <p>
-      {{feedback}}
+    <p *ngFor="let item of feedback">
+      {{item}}
     </p>
   </div>
-  <div class="d-flex flex-row" (keydown.enter)="checkAnswer()">
-    <button class="btn btn-dark m-2" (keydown.enter)="checkAnswer()" (click)="checkAnswer()">{{buttontext}}</button>
+  <div class="d-flex flex-row" (keydown.enter)="process()">
+    <button class="btn btn-dark m-2" (keydown.enter)="process()" (click)="process()">{{buttontext}}</button>
   </div>

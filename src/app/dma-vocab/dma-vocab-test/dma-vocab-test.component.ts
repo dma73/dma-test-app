@@ -83,15 +83,6 @@ export class DmaVocabTestComponent implements OnInit {
     console.log('random(', max, ' , ', min,  ') = ' + rv);
     return rv;
   }
-  private randomBoolean(): boolean {
-    let rv = false;
-    const rnd = this.randomInt(2,0);
-    if (rnd > 0) {
-      rv = true;
-    }
-    // console.log('' + rnd + ' , ' + rv);
-    return rv;
-  }
   private addTestItemsPerMaitrise(count: number, maitrise: number, vocabItems: IVocabItem[]) {
     const filtered: IVocabItem[] = this.filterUtils.getFilteredItems('maitrise', '' + maitrise, vocabItems);
     if (filtered.length > 0) {
@@ -171,19 +162,9 @@ export class DmaVocabTestComponent implements OnInit {
       this.reponse = '';
       this.feedback = new Array<string>();
       this.buttontext = 'Valider';
-      this.setQuestionReponse();
     } else {
       this.feedback = ['Le test est terminé, vous avez ' + (this.testSize - this.errorCount) + '/' + this.testSize];
       this.buttontext = 'Nouveau Test...';
-    }
-  }
-  setQuestionReponse() {
-    if (this.sens) {
-      this.question = this.matiere.questionlabel + ': ' + this.testItem.question + this.getContexte();
-      this.labelreponse = this.matiere.reponselabel + ': ';
-    } else {
-      this.question = this.matiere.reponselabel + ': ' + this.testItem.reponse + this.getContexte();
-      this.labelreponse = this.matiere.questionlabel + ': ';
     }
   }
   getContexte(): string {
@@ -234,10 +215,10 @@ export class DmaVocabTestComponent implements OnInit {
     let rv = false;
     // console.log(this.reponse + ' , ' + reponse + ' , ' + this.sens);
     if (this.checkAnswers()) {
-      this.utils.correct(this.utils.tabularToVocab(this.testItem));
+      this.utils.correct(this.testItem);
       rv = true;
     } else {
-      this.utils.incorrect(this.utils.tabularToVocab(this.testItem));
+      this.utils.incorrect(this.testItem);
     }
     this.vocabService.saveVocabItem(+(this.testItem).id, this.utils.tabularToVocab(this.testItem)).subscribe(
       (vocabItem: IVocabItem) => {

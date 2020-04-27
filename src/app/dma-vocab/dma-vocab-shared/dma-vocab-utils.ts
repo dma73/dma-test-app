@@ -19,7 +19,7 @@ export class DmaVocabUtils {
     }
     return color;
   }
-  correct(item: IVocabItem) {
+  correct(item: ITabularItem) {
     if (item.maitrise < 2) {
       item.maitrise++;
       item.niveau = 0;
@@ -33,7 +33,7 @@ export class DmaVocabUtils {
       }
     }
   }
-  incorrect(item: IVocabItem) {
+  incorrect(item: ITabularItem) {
     if (item.maitrise > 0) {
       item.maitrise--;
       item.niveau = 0;

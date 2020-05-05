@@ -47,7 +47,7 @@ export class VocabService {
     updateCache(savedItem: IVocabItem) {
       if (savedItem.id) {
         const index = this.items.findIndex((item) => item.id === savedItem.id);
-        console.log(savedItem.question, savedItem.id, index);
+        console.log(savedItem.data, savedItem.id, index);
         if (index >= 0) {
           this.items[index] = savedItem;
         } else {

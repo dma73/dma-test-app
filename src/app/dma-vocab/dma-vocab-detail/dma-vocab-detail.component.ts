@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem, DataType } from '../dma-vocab-shared/interfaces';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 
@@ -11,7 +11,7 @@ import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
   styleUrls: ['./dma-vocab-detail.component.css']
 })
 export class DmaVocabDetailComponent implements OnInit {
-  tabularItem: ITabularItem;
+  vocabItem: IVocabItem;
   matiere: IMatiereItem;
   headers: Array<string>;
   submitted = false;
@@ -40,21 +40,21 @@ export class DmaVocabDetailComponent implements OnInit {
         this.matiere = matiereItem;
         this.headers = this.utils.initHeaders(matiereItem);
         if (+id === 0) {
-          this.tabularItem = this.newItem(matiereItem);
+          this.vocabItem = this.newItem(matiereItem);
         } else {
           this.vocabService.getVocabItem(+id).subscribe((vocabItem: IVocabItem) => {
-            this.tabularItem = this.utils.vocabToTabular(vocabItem);
+            this.vocabItem = vocabItem;
           });
         }
       });
   }
 
-  newItem(matiere: IMatiereItem): ITabularItem {
-    const item = {} as ITabularItem;
+  newItem(matiere: IMatiereItem): IVocabItem {
+    const item = {} as IVocabItem;
     item.id = 0;
     item.contexte = '';
-    item.question = this.utils.getTabular();
-    item.reponse = this.utils.newStringArray(this.headers.length);
+    item.dataType = new DataType();
+    item.data = this.utils.newStringArray(this.headers.length);
     item.theme = this.theme;
     item.bidirectionnel = this.matiere.bidirectionnel;
     item.matiereid = this.matiere.id;
@@ -64,9 +64,8 @@ export class DmaVocabDetailComponent implements OnInit {
   }
   onSubmit() {
     this.submitted = true;
-    const item = this.utils.tabularToVocab(this.tabularItem);
-    this.vocabService.saveVocabItem(+(item).id, item).subscribe((vocabItem: IVocabItem) => {
-      this.tabularItem = this.utils.vocabToTabular(vocabItem);
+    this.vocabService.saveVocabItem((this.vocabItem).id, this.vocabItem).subscribe((vocabItem: IVocabItem) => {
+      this.vocabItem = vocabItem;
       this.submitted = false;
       if (this.newtheme) {
         this.theme = vocabItem.theme;

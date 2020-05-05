@@ -1,5 +1,7 @@
-export interface IMatiereItem {
+export interface IItem {
   id: number;
+}
+export interface IMatiereItem extends IItem {
   questionlabel: string;
   reponselabel: string;
   intitule: string;
@@ -8,11 +10,10 @@ export interface IMatiereItem {
   _links?: object;
 }
 export interface IVocabItem extends IDataItem {
-  reponse: string;
+  dataType: DataType;
+  data: Array<string>;
 }
-export interface IDataItem {
-  question: string;
-  id: number;
+export interface IDataItem extends IItem {
   maitrise: number;
   niveau: number;
   theme: string;
@@ -21,9 +22,17 @@ export interface IDataItem {
   matiereid: number;
   _links?: object;
 }
-export interface ITabularItem extends IDataItem {
-  reponse: string[];
+export class DataType {
+  constructor() {
+    this.type = 'tabular';
+  }
+  type: string;
 }
+
+/*export interface ITabularItem extends IDataItem {
+  dataType: DataType;
+  data: Array<string>;
+}*/
 
 export interface IRESTfulVocabItemList {
   _embedded: IVocabItemList;
@@ -49,6 +58,7 @@ export interface IMatiereImport {
     Intitule: string;
     FileName: string;
     Id: number;
+    id?: number;
 }
 
 export interface IVocabItemImport {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IMatiereImport, IVocabItemImport, IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
+import { IMatiereImport, IVocabItemImport, IVocabItem, IMatiereItem, DataType } from '../dma-vocab-shared/interfaces';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
 
@@ -67,6 +67,7 @@ processItem(item: IMatiereImport) {
   this.matiereService.saveMatiereItem(saved.id, saved)
   .subscribe((savedItem) => {
     item.Id = savedItem.id;
+    item.id = savedItem.id;
     console.log(item.FileName, savedItem.id, item.Id);
   });
 }
@@ -87,15 +88,15 @@ importMatiere() {
     let count = 0;
     this.items.forEach((item) => {
       const tosave = {} as IVocabItem;
-      tosave.question = item.Question;
-      tosave.reponse = item.Reponse;
+      tosave.dataType = new DataType();
+      tosave.data = [item.Question, item.Reponse];
       tosave.theme = item.Theme;
-      tosave.matiereid = this.matieres[0].Id;
+      tosave.matiereid = this.matieres[0].id;
       tosave.maitrise = item.Maitrise;
       tosave.niveau = item.Niveau;
       tosave.bidirectionnel = true;
       tosave.contexte = '';
-      console.log(item.Question, item.Maitrise, tosave.question, tosave.maitrise, tosave.niveau);
+      console.log(item.Question, item.Maitrise, tosave.data, tosave.maitrise, tosave.niveau);
       this.vocabService.saveVocabItem(0, tosave).subscribe((vocabItem) => count ++);
     });
     console.log(count + ' items saved');

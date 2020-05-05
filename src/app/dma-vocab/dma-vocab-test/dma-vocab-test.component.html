@@ -8,13 +8,13 @@
 </div>
 <div *ngFor="let label of labels let idx=index" class="form-group" class="m-2">
   <label>{{label}}</label>
-  <input *ngIf="idx===0 && labels.length > 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  <input *ngIf="idx===0 && labels.length > 1" type="text" class="form-control" id="{{idx}}" autocomplete="new-password" required [(ngModel)]="reponses[idx]" name="{{idx}}"
   appInputAutoFocus>
-  <input *ngIf="idx===0 && labels.length === 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  <input *ngIf="idx===0 && labels.length === 1" type="text" class="form-control" id="{{idx}}" autocomplete="new-password" required [(ngModel)]="reponses[idx]" name="{{idx}}"
   appInputAutoFocus (keydown.enter)="process()">
-  <input *ngIf="idx!==0 && idx === labels.length - 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}"
+  <input *ngIf="idx!==0 && idx === labels.length - 1" type="text" class="form-control" id="{{idx}}" autocomplete="new-password" required [(ngModel)]="reponses[idx]" name="{{idx}}"
   (keydown.enter)="process()">
-  <input *ngIf="idx!==0 && idx !== labels.length - 1" type="text" class="form-control" id="{{idx}}" required [(ngModel)]="reponses[idx]" name="{{idx}}">
+  <input *ngIf="idx!==0 && idx !== labels.length - 1" type="text" class="form-control" id="{{idx}}" autocomplete="new-password" required [(ngModel)]="reponses[idx]" name="{{idx}}">
 </div>
   <div class="m-2">
     <p *ngFor="let item of feedback">

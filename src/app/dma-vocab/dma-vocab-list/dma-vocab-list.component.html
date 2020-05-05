@@ -24,9 +24,9 @@
     <tbody>
       <tr *ngFor="let item of items">
         <td>
-          {{ item.question | capitalizeFirst }}
+          {{ item.data[0] | capitalizeFirst }}
         </td>
-        <td>{{ item.reponse | capitalizeFirst }}</td>
+        <td>{{ item.data[1] | capitalizeFirst }}</td>
         <td>{{ item.contexte | capitalizeFirst }}</td>
         <td>{{ item.theme | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(item.maitrise)">

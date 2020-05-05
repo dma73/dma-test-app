@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { DmaVocabFilterutils } from '../dma-vocab-shared/dma-vocab-filterutils';
@@ -12,11 +12,11 @@ import { MatiereService } from '../dma-vocab-core/matiere.service';
   styleUrls: ['./dma-vocab-test.component.css']
 })
 export class DmaVocabTestComponent implements OnInit {
-  testItems: ITabularItem[];
+  testItems: IVocabItem[];
   utils: DmaVocabUtils = new DmaVocabUtils();
   testSize = 0;
   sens = false;
-  testItem: ITabularItem;
+  testItem: IVocabItem;
   savedItem: IVocabItem;
   enonces: string[];
   solutions: string[];
@@ -69,7 +69,7 @@ export class DmaVocabTestComponent implements OnInit {
       });
   }
   private addTestItems(items: IVocabItem[]) {
-    this.testItems = new Array<ITabularItem>();
+    this.testItems = new Array<IVocabItem>();
     this.addTestItemsPerMaitrise(1, 4, items);
     this.addTestItemsPerMaitrise(3, 3, items);
     this.addTestItemsPerMaitrise(6, 2, items);
@@ -88,13 +88,13 @@ export class DmaVocabTestComponent implements OnInit {
     if (filtered.length > 0) {
       while (this.testItems.length < count && filtered.length > 0) {
         const rand: number = this.randomInt(filtered.length, 0);
-        this.testItems.push(this.utils.vocabToTabular(filtered[rand]));
+        this.testItems.push(filtered[rand]);
         filtered.splice(rand, 1);
       }
     }
   }
   initRandom() {
-    const size = this.testItem.reponse.length;
+    const size = this.testItem.data.length;
     this.reset();
     console.log(size);
     if (this.testItem.bidirectionnel) {
@@ -105,11 +105,11 @@ export class DmaVocabTestComponent implements OnInit {
       this.questionCount = 1;
     }
     for (let i = 0; i < this.questionCount; i++) {
-      this.enonces.push(this.testItem.reponse[this.indexes[i]]);
+      this.enonces.push(this.testItem.data[this.indexes[i]]);
       this.labelsquestions.push(this.headers[this.indexes[i]]);
     }
     for (let i = this.questionCount; i < size; i++) {
-      this.solutions.push(this.testItem.reponse[this.indexes[i]]);
+      this.solutions.push(this.testItem.data[this.indexes[i]]);
       this.reponses.push('');
       this.labels.push(this.headers[this.indexes[i]]);
     }
@@ -139,7 +139,7 @@ export class DmaVocabTestComponent implements OnInit {
 
   getArray(size: number): Array<number> {
     const array = new Array<number>(size);
-    for (let index = 0; index < size; index ++){
+    for (let index = 0; index < size; index ++) {
       array[index] = index;
     }
     return array;
@@ -200,7 +200,7 @@ export class DmaVocabTestComponent implements OnInit {
       this.feedback = new Array<string>();
       this.feedback.push('Réponse correcte: ');
       this.headers.forEach((s, i) => {
-        this.feedback.push(' ' + s + ': ' + this.testItem.reponse[i]);
+        this.feedback.push(' ' + s + ': ' + this.testItem.data[i]);
       });
       this.error = true;
       this.errorCount++;
@@ -220,7 +220,7 @@ export class DmaVocabTestComponent implements OnInit {
     } else {
       this.utils.incorrect(this.testItem);
     }
-    this.vocabService.saveVocabItem(+(this.testItem).id, this.utils.tabularToVocab(this.testItem)).subscribe(
+    this.vocabService.saveVocabItem(this.testItem.id, this.testItem).subscribe(
       (vocabItem: IVocabItem) => {
         this.savedItem = vocabItem;
       });

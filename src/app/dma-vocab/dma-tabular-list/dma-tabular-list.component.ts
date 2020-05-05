@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import {
   faEdit,
   faTrashAlt,
@@ -25,7 +25,7 @@ export class DmaTabularListComponent implements OnInit, OnDestroy {
   faPlus = faPlus;
   faGraduationCap = faGraduationCap;
   capitalizeFirst: CapitalizeFirstPipe;
-  items: ITabularItem[];
+  items: IVocabItem[];
   title: string;
   headers: string[];
   utils: DmaVocabUtils = new DmaVocabUtils();
@@ -61,14 +61,11 @@ export class DmaTabularListComponent implements OnInit, OnDestroy {
     this.dataService
       .getVocabItems()
       .subscribe((vocabItems: IVocabItem[]) => {
-        this.items = new Array<ITabularItem>();
-        this.filterUtils.getFilteredItems(
+        this.items = this.filterUtils.getFilteredItems(
           'matiere',
           '' + this.matiere.id,
           vocabItems
-        ).forEach((item) => {
-          this.items.push(this.utils.vocabToTabular(item));
-        });
+        );
       });
 
   }

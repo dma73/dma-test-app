@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatiereService } from '../dma-vocab-core/matiere.service';
@@ -16,7 +16,7 @@ import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
   styleUrls: ['./dma-vocab-delete.component.css']
 })
 export class DmaVocabDeleteComponent implements OnInit {
-  tabularItem: ITabularItem;
+  vocabItem: IVocabItem;
   theme = '';
   headers: Array<string>;
   constructor(private vocabService: VocabService, private matiereService: MatiereService,
@@ -29,12 +29,12 @@ export class DmaVocabDeleteComponent implements OnInit {
       (matiereItem: IMatiereItem) => {
         this.headers = this.utils.initHeaders(matiereItem);
         this.vocabService.getVocabItem(+id).subscribe((vocabItem: IVocabItem) => {
-      this.tabularItem = this.utils.vocabToTabular(vocabItem);
+      this.vocabItem = vocabItem;
     });
     });
   }
   onSubmit() {
-    this.vocabService.deleteVocabItem(this.tabularItem.id).subscribe(() => {
+    this.vocabService.deleteVocabItem(this.vocabItem.id).subscribe(() => {
       if (this.theme === '') {
         this.router.navigate(['/vocablist']);
       } else {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IVocabItem, IMatiereItem, ITabularItem } from '../dma-vocab-shared/interfaces';
+import { IVocabItem, IMatiereItem } from '../dma-vocab-shared/interfaces';
 import { VocabService } from '../dma-vocab-core/vocab.service';
 import { faGraduationCap, faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DmaVocabUtils } from '../dma-vocab-shared/dma-vocab-utils';
@@ -22,7 +22,7 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
   words: IVocabItem[];
   current = '';
-  currentLesson: ITabularItem[] = new Array<ITabularItem>();
+  currentLesson: IVocabItem[] = new Array<IVocabItem>();
   utils: DmaVocabUtils = new DmaVocabUtils();
   matiereItem: IMatiereItem;
   subscription: Subscription;
@@ -104,9 +104,9 @@ export class DmaVocabLessonComponent implements OnInit, OnDestroy {
   }
   refresh() {
     if (this.current !== '') {
-      this.currentLesson = new Array<ITabularItem>();
+      this.currentLesson = new Array<IVocabItem>();
       this.filterUtils.getFilteredItems('theme', this.current, this.words).forEach((item) => {
-        this.currentLesson.push(this.utils.vocabToTabular(item));
+        this.currentLesson.push(item);
         this.matiereService.setLastTheme(this.current);
       });
     }

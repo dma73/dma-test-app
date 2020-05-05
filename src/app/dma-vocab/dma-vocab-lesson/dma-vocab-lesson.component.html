@@ -32,9 +32,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let word of currentLesson">
-        <td *ngFor="let data of word.reponse let idx=index">
-          <b *ngIf="idx===0">{{ data | capitalizeFirst }}</b>
-          <span *ngIf="idx > 0">{{ data | capitalizeFirst }}</span></td>
+        <td *ngFor="let line of word.data let idx=index">
+          <b *ngIf="idx===0">{{ line | capitalizeFirst }}</b>
+          <span *ngIf="idx > 0">{{ line | capitalizeFirst }}</span></td>
         <td>{{ word.contexte | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(word.maitrise)">
           <fa-icon [icon]="faGraduationCap"></fa-icon>

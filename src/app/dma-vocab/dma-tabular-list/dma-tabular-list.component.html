@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of items">
-        <td *ngFor="let data of item.reponse">{{ data | capitalizeFirst }}</td>
+        <td *ngFor="let dataitem of item.data">{{ dataitem | capitalizeFirst }}</td>
         <td>{{ item.contexte | capitalizeFirst }}</td>
         <td>{{ item.theme | capitalizeFirst }}</td>
         <td [style.color]="utils.getColor(item.maitrise)">

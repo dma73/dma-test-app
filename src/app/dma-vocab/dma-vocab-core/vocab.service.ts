@@ -73,12 +73,9 @@ export class VocabService {
     }
 
     getVocabItem(id: number): Observable<IVocabItem> {
-      return this.http.get<IRESTfulVocabItemList>(environment.baseurl + '/vocabitems')
-      // return this.http.get<any>(environment.baseurl + '/vocabitems')
+      return this.getVocabItems()
         .pipe(
-          map(data => {
-            console.log(data);
-            const vocabitems = data._embedded.vocabItemList;
+          map(vocabitems => {
             const filtered = vocabitems.filter((item: IVocabItem) => item.id === id);
             return this.getFirst<IVocabItem>(filtered);
           }),

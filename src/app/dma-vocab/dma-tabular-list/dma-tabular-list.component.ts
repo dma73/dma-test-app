@@ -51,8 +51,9 @@ export class DmaTabularListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.matiereService
       .getCurrentOrDefaultItem()
-      .subscribe((matiereItem: IMatiereItem) => {
-        this.loadData(matiereItem);
+      .subscribe((matiere: IMatiereItem) => {
+        this.loadHeaders(matiere);
+        this.loadData(matiere);
       });
   }
   loadData(matiereItem: IMatiereItem) {

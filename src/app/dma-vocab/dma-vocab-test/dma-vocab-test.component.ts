@@ -105,7 +105,7 @@ export class DmaVocabTestComponent implements OnInit {
       this.questionCount = 1;
     }
     for (let i = 0; i < this.questionCount; i++) {
-      this.enonces.push(this.testItem.data[this.indexes[i]]);
+      this.enonces.push(this.testItem.data[this.indexes[i]]  );
       this.labelsquestions.push(this.headers[this.indexes[i]]);
     }
     for (let i = this.questionCount; i < size; i++) {
